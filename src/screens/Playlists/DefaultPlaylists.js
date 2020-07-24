@@ -9,6 +9,7 @@ const DefaultPlaylists = () => {
         }}>
             <View style={{
                 marginHorizontal: 16,
+                marginVertical: 20
             }}>
                 <View style={{
                     marginTop: 60,
@@ -29,7 +30,7 @@ const DefaultPlaylists = () => {
                 </View>
                 <View style={{
                     display: 'flex',
-                    flexDirection: 'row'
+                    flexDirection: 'row',
                 }}>
                     <View>
                         <Text style={{
@@ -39,16 +40,21 @@ const DefaultPlaylists = () => {
                             fontSize: 12,
                         }}>Create playlist to organize your tracks</Text>
                     </View>
-                    <View>
+                    <View style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                    }}>
                         <TouchableOpacity style={{
                             width: 20,
-                            height: 20
+                            height: 20,
+                            marginLeft: 12
                         }}>
                             <Image source={require('../../assets/import.png')}/>
                         </TouchableOpacity>
                         <TouchableOpacity style={{
                             width: 20,
-                            height: 20
+                            height: 20,
+                            marginLeft: 12
                         }}>
                             <Image source={require('../../assets/plus.png')}/>
                         </TouchableOpacity>
