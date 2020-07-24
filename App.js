@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Playlists from 'screens/Playlists';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Player from 'screens/Player';
-import PersonalPlaylist from 'screens/Playlists/PersonalPlaylist';
+import SearchBar from 'screens/Search/components/SearchBar';
 
 const Tab = createBottomTabNavigator();
 
@@ -33,7 +33,7 @@ export default function App() {
                 initialRouteName={'Playlists'}>
                 <Tab.Screen name="Playlists" component={Playlists} />
                 <Tab.Screen name="Search" component={Player} />
-                <Tab.Screen name="More" component={PersonalPlaylist} />
+                <Tab.Screen name="More" component={SearchBar} />
             </Tab.Navigator>
         </NavigationContainer>
     );

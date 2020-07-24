@@ -2,7 +2,7 @@ import React from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 import ShuffleButton from 'components/ShuffleButton';
 
-const PersonalPlaylist = () => {
+const PersonalPlaylist = ({navigation}) => {
 
     return (
         <View style={{
@@ -19,7 +19,9 @@ const PersonalPlaylist = () => {
                     display: 'flex',
                     flexDirection: 'row'
                 }}>
-                    <Image source={require('assets/back.png')} />
+                    <TouchableOpacity onPress={()=>navigation.goBack()}>
+                        <Image source={require('assets/back.png')} />
+                    </TouchableOpacity>
                     <Text style={{
                         marginHorizontal: 12,
                         width: '80%',

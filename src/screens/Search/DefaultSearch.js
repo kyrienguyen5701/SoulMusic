@@ -1,6 +1,6 @@
 import React from 'react';
 import {Text, View} from 'react-native';
-// import SearchBar from '../components/SearchBar';
+import SearchBar from '../components/SearchBar';
 
 const DefaultSearch = () => {
     return (
@@ -24,7 +24,7 @@ const DefaultSearch = () => {
                         Search
                     </Text>
                 </View>
-                {/*<SearchBar />*/}
+                <SearchBar />
                 <View
                     style={{
                         marginTop: 20,
