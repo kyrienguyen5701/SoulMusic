@@ -7,13 +7,15 @@ import SearchResult from 'screens/Search/components/SearchResult';
 const SearchBar = () => {
 
     const [value, setValue] = useState('');
+    const [results, setResults] = useState([]);
     const [loading,setLoading] = useState(false);
     const fetchData = () => {
         setLoading(true);
-        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=100&q=${value}&type=video&key=AIzaSyDdjtaMDodDz39XWWwAVE-YBS9ABpozVxA`)
+        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=${value}&type=video&key=AIzaSyDdjtaMDodDz39XWWwAVE-YBS9ABpozVxA`)
         .then(res => res.json())
         .then(data => {
             setLoading(false);
+            setResults(data.items);
             console.log(data);
         })
     }
@@ -39,16 +41,16 @@ const SearchBar = () => {
                 placeholderTextColor={'rgba(0, 89, 149, 0.4)'}
                 value={value}
                 onChangeText={text => setValue(text)}
-                onSubmitEditing={fetchData()}
+                onSubmitEditing={fetchData}
             />
             {loading ?<ActivityIndicator style={{marginTop:10}} size="large" color="red"/>:null }
             <FlatList
-                // data={miniCardData}
+                data={results}
                 renderItem={({item})=>{
                     return <SearchResult
-                        id = {item.id.videoId}
-                        title = {item.snippet.title}
-                        channel = {item.snippet.channelTitle}
+                        id={item.id.videoId}
+                        title={item.snippet.title}
+                        channel={item.snippet.channelTitle}
                     />
                 }}
                 keyExtractor={item=>item.id.videoId}
