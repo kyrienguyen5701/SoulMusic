@@ -11,7 +11,7 @@ const SearchBar = () => {
     const [loading,setLoading] = useState(false);
     const fetchData = () => {
         setLoading(true);
-        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=${value}&type=video&key=AIzaSyDdjtaMDodDz39XWWwAVE-YBS9ABpozVxA`)
+        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1-==ddsedd=-0&q=${value}&type=video&key=AIzaSyDdjtaMDodDz39XWWwAVE-YBS9ABpozVxA`)
         .then(res => res.json())
         .then(data => {
             setLoading(false);

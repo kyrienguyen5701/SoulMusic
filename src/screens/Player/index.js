@@ -1,8 +1,13 @@
-import React from "react";
+import React, {useState} from 'react';
 import {TouchableOpacity, View, Text, Image} from "react-native";
-import {Song} from "components/Song";
+import Video from "react-native-video";
 
-const Player = (props: Song) => {
+const PlayerFullScreen = ({navigation, route}) => {
+    const song = route.params;
+    const [paused, setPaused] = useState(false)
+
+    const [rate, setRate] = useState(1.0)
+    console.log(song.id)
 
     return (
         <View style={{
@@ -23,15 +28,27 @@ const Player = (props: Song) => {
                         width: '80%',
                         textAlign: 'center',
                         fontSize: 20
-                    }}>{props.title}</Text>
+                    }}>{song.title}</Text>
                     <TouchableOpacity>
                         <Image source={require('assets/timer.png')} />
                     </TouchableOpacity>
                 </View>
-                <View>
-                    <TouchableOpacity>
-                        <Image source={{uri: `https://i.ytimg.com/vi/${props.id}/hqdefault.jpg`}} />
-                    </TouchableOpacity>
+                <View style={{
+                    width: "100%",
+                    height: 100
+                }}>
+                    <Video
+                        // source={{ uri: `https://www.youtube.com/embed/${song.id}`}}
+                        style={{flex: 1}}
+                        source={{uri: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"}}
+                        paused={paused}
+                        rate={rate}
+                        playInBackground={true}
+                        ignoreSilentSwitch={'ignore'}
+                        playWhenInactive={true} // for iOS only
+                        resizeMode={'contain'}
+
+                    />
                 </View>
                 <View style={{
                     display: 'flex',
@@ -47,9 +64,18 @@ const Player = (props: Song) => {
                     <TouchableOpacity>
                         <Image source={require('assets/previous.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Image source={require('assets/play-button.png')} />
-                    </TouchableOpacity>
+                    {paused
+                        ? <TouchableOpacity onPress={() => {
+                            setPaused(!paused);
+                        }}>
+                            <Image source={require('assets/play-button.png')} />
+                        </TouchableOpacity>
+                        : <TouchableOpacity onPress={() => {
+                            setPaused(!paused);
+                        }}>
+                            <Image source={require('assets/pause.png')} />
+                        </TouchableOpacity>
+                    }
                     <TouchableOpacity>
                         <Image source={require('assets/next.png')} />
                     </TouchableOpacity>
@@ -81,4 +107,4 @@ const Player = (props: Song) => {
     );
 }
 
-export default Player;
+export default PlayerFullScreen;
