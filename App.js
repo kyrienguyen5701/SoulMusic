@@ -7,6 +7,10 @@ import Player from 'screens/Player';
 import SearchBar from 'screens/Search/components/SearchBar';
 import DefaultSearch from 'screens/Search/DefaultSearch';
 import miniPlayer from 'screens/Player/miniPlayer'
+import PlayerFullScreen from 'screens/Player';
+import { enableScreens } from 'react-native-screens';
+
+enableScreens();
 
 
 const Tab = createBottomTabNavigator();
@@ -33,9 +37,9 @@ export default function App() {
           activeTintColor: 'tomato',
           inactiveTintColor: 'gray',
         }}
-        initialRouteName={'miniPlayer'}
+        initialRouteName={'Playlists'}
         >
-           <Tab.Screen name="miniPlayer" component={miniPlayer}/>
+        <Tab.Screen name="miniPlayer" component={miniPlayer}/>
         <Tab.Screen name="DefaultSearch" component={DefaultSearch}/>
         <Tab.Screen name="Playlists" component={Playlists} />
         <Tab.Screen name="Player" component={Player} />

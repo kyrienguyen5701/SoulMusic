@@ -11,18 +11,18 @@ const Stack = createStackNavigator();
 const Search = () => {
     return (
         <View>
-            <NavigationContainer>
-                <Stack.Navigator initialRouteName='Search'>
-                    <Stack.Screen name='Search' component={DefaultSearch}/>
-                    {/*<Stack.Screen name='Query' component={QuerySearch}/>*/}
-                </Stack.Navigator>
-            </NavigationContainer>
-            <NavigationContainer>
-                <Stack.Navigator initialRouteName='Search'>
-                    <Stack.Screen name='Search' component={DefaultSearch} />
-                    {/*<Stack.Screen name='Trending' component={Trending} />*/}
-                </Stack.Navigator>
-            </NavigationContainer>
+            {/*<NavigationContainer>*/}
+            {/*    <Stack.Navigator initialRouteName='Search'>*/}
+            {/*        <Stack.Screen name='Search' component={DefaultSearch}/>*/}
+            {/*        /!*<Stack.Screen name='Query' component={QuerySearch}/>*!/*/}
+            {/*    </Stack.Navigator>*/}
+            {/*</NavigationContainer>*/}
+            {/*<NavigationContainer>*/}
+            {/*    <Stack.Navigator initialRouteName='Search'>*/}
+            {/*        <Stack.Screen name='Search' component={DefaultSearch} />*/}
+            {/*        /!*<Stack.Screen name='Trending' component={Trending} />*!/*/}
+            {/*    </Stack.Navigator>*/}
+            {/*</NavigationContainer>*/}
         </View>
     );
 };

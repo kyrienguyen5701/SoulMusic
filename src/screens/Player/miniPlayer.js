@@ -11,7 +11,7 @@ const miniPlayer = () => {
       }}>
       <View  
       style={{
-        marginTop: 800,
+        marginTop: 10,
         backgroundColor: 'black',
         flexDirection: 'row',
         height:70,
