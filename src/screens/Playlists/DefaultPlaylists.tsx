@@ -1,37 +1,35 @@
 import React from "react";
 import {FlatList, Image, Text, TouchableOpacity, View, Dimensions} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import SongData, {Song} from 'components/Song';
+import SongData from 'components/Song';
+import Recent from "screens/Playlists/Recent";
 
 export const width_screen = Dimensions.get('window').width;
 
-const RecentlyPlayedSong = (props: Song) => {
+const PlaylistButton = (props) => {
     const navigation = useNavigation();
 
     return (
-        <View>
-            <TouchableOpacity onPress={() => navigation.navigate('Player', props)}
+        <TouchableOpacity
             style={{
-                marginRight: 12,
-                paddingVertical: 12
-            }}>
-                <Image source={{uri: `https://i.ytimg.com/vi/${props.id}/hqdefault.jpg`}}
-                       style={{
-                           width: width_screen * .45,
-                           height: width_screen * .25
-                       }}/>
-                <Text style={{
-                    width: width_screen * .45,
-                    fontSize: 12.5
-                }}>
-                    {props.title + ' - ' + props.channel}
-                </Text>
-            </TouchableOpacity>
-        </View>
+                width: "40%",
+                height: 24,
+                marginHorizontal: 10,
+                marginVertical: 10,
+                backgroundColor: 'azure',
+                borderRadius: 10
+            }}
+            onPress={() => navigation.navigate('Playlist', props.title)}
+        >
+            <Text>{props.title}</Text>
+        </TouchableOpacity>
     );
 }
 
+const BasicGenres = ['V-Pop', 'K-Pop', 'Pop', 'Blue']
+
 const DefaultPlaylists = () => {
+
     return (
         <View style={{
             backgroundColor: 'red',
@@ -56,47 +54,31 @@ const DefaultPlaylists = () => {
                     }}>Recently played</Text>
                 </View>
                 <View>
-                    <FlatList data={SongData}
-                              horizontal={true}
-                              renderItem={({item})=>{
-                        return <RecentlyPlayedSong
+                    <FlatList
+                        data={SongData.slice(0, 10)}
+                        horizontal={true}
+                        renderItem={({item})=>{
+                        return <Recent
                             id={item.id}
                             title={item.title}
                             channel={item.channel}
+                            genre={item.genre}
+                            url={item.url}
                         />
                     }} />
                 </View>
                 <View style={{
                     display: 'flex',
                     flexDirection: 'row',
+                    flexWrap: 'wrap'
                 }}>
-                    <View>
-                        <Text style={{
-                            fontSize: 20,
-                        }}>Personal playlists</Text>
-                        <Text style={{
-                            fontSize: 12,
-                        }}>Create playlist to organize your tracks</Text>
-                    </View>
-                    <View style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                    }}>
-                        <TouchableOpacity style={{
-                            width: 20,
-                            height: 20,
-                            marginLeft: 12
-                        }}>
-                            <Image source={require('../../assets/import.png')}/>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{
-                            width: 20,
-                            height: 20,
-                            marginLeft: 12
-                        }}>
-                            <Image source={require('../../assets/plus.png')}/>
-                        </TouchableOpacity>
-                    </View>
+                    <FlatList
+                        data={BasicGenres}
+                        renderItem={({item}) => {
+                            return <PlaylistButton title={item} />
+                        }}
+                        numColumns={2}
+                    />
                 </View>
                 <View>
                 </View>
