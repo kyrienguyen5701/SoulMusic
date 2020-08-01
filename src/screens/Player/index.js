@@ -37,7 +37,7 @@ const PlayerFullScreen = ({navigation, route}) => {
         });
     }
 
-    console.log(song.id)
+    console.log(song.id);
 
     return (
         <View style={{
