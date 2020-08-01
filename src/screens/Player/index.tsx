@@ -1,7 +1,8 @@
 import React from "react";
 import {TouchableOpacity, View, Text, Image} from "react-native";
+import {Song} from "components/Song";
 
-const Player = () => {
+const Player = (props: Song) => {
 
     return (
         <View style={{
@@ -22,9 +23,14 @@ const Player = () => {
                         width: '80%',
                         textAlign: 'center',
                         fontSize: 20
-                    }}>Song title</Text>
+                    }}>{props.title}</Text>
                     <TouchableOpacity>
                         <Image source={require('assets/timer.png')} />
+                    </TouchableOpacity>
+                </View>
+                <View>
+                    <TouchableOpacity>
+                        <Image source={{uri: `https://i.ytimg.com/vi/${props.id}/hqdefault.jpg`}} />
                     </TouchableOpacity>
                 </View>
                 <View style={{

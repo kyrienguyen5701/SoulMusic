@@ -1,5 +1,34 @@
 import React from "react";
-import {Image, Text, TouchableOpacity, View} from "react-native";
+import {FlatList, Image, Text, TouchableOpacity, View, Dimensions} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import SongData, {Song} from 'components/Song';
+export const width_screen = Dimensions.get('window').width;
+
+const RecentlyPlayedSong = (props: Song) => {
+    const navigation = useNavigation();
+
+    return (
+        <View>
+            <TouchableOpacity onPress={() => navigation.navigate('Player', props)}
+            style={{
+                marginRight: 12,
+                paddingVertical: 12
+            }}>
+                <Image source={{uri: `https://i.ytimg.com/vi/${props.id}/hqdefault.jpg`}}
+                       style={{
+                           width: width_screen * .45,
+                           height: width_screen * .25
+                       }}/>
+                <Text style={{
+                    width: width_screen * .45,
+                    fontSize: 12.5
+                }}>
+                    {props.title + ' - ' + props.channel}
+                </Text>
+            </TouchableOpacity>
+        </View>
+    );
+}
 
 const DefaultPlaylists = () => {
     return (
