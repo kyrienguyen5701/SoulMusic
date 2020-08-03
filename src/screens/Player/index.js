@@ -3,6 +3,7 @@ import {TouchableOpacity, View, Text, Image} from "react-native";
 import Video from "react-native-video";
 // import MediaControls, {PLAYER_STATES} from 'react-native-media-controls';
 import SeekBar from 'screens/Player/components/SeekBar';
+import LinearGradient from 'react-native-linear-gradient';
 
 
 const PlayerFullScreen = ({navigation, route}) => {
@@ -40,34 +41,49 @@ const PlayerFullScreen = ({navigation, route}) => {
     console.log(song.id)
 
     return (
+        <LinearGradient colors={['#0C08C4', '#030239', '#000000']}>
+
         <View style={{
-            backgroundColor: 'red',
+
             height: '100%',
         }}>
             <View style={{
                 marginHorizontal: 16,
                 marginVertical: 20,
+                marginTop:35
             }}>
                 <View style={{
                     display: 'flex',
                     flexDirection: 'row'
                 }}>
-                    <Image source={require('assets/down.png')} />
+                    <Image style={{
+                        
+                    }} source={require('assets/down.png')} />
                     <Text style={{
                         marginHorizontal: 12,
                         width: '80%',
                         textAlign: 'center',
-                        fontSize: 20
+                        fontSize: 20,
+                        color:"#D87777",
+                        
+                        
                     }}>{song.title}</Text>
+                    
                     <TouchableOpacity>
                         <Image source={require('assets/timer.png')} />
                     </TouchableOpacity>
+                   
                 </View>
+                <Text style={{
+                    color:"#ffffff",
+                    textAlign:'center',
+                    opacity:0.7
+                }}>{song.channel}</Text>
                 <View style={{
                     width: "100%",
                     height: 200,
                     backgroundColor: "azure",
-                    marginTop: 12
+                    marginTop: 15
                 }}>
                     <Video
                         source={{uri: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"}}
@@ -78,7 +94,8 @@ const PlayerFullScreen = ({navigation, route}) => {
                         style={{
                             width: "100%",
                             height: 100,
-                            flex: 1
+                            flex: 1,
+                            
                         }}
                     />
                 </View>
@@ -152,7 +169,7 @@ const PlayerFullScreen = ({navigation, route}) => {
                 </View>
             </View>
         </View>
-
+</LinearGradient>
     );
 }
 

@@ -11,8 +11,8 @@ const miniPlayer = () => {
       }}>
       <View  
       style={{
-        marginTop: 10,
-        backgroundColor: 'black',
+        marginTop: 600,
+        backgroundColor: '#030239',
         flexDirection: 'row',
         height:70,
         width: '100%',
@@ -22,7 +22,8 @@ const miniPlayer = () => {
           style={styles.minImage}
           source={require('../../assets/maxresdefault.jpg')}
         />
-        <Text style={styles.title}>
+        <Text numberOfLines={2}
+        style={styles.title}>
           TOULIVER x BINZ - "BIGCITYBOI" (Official Music Video)
         </Text>
         <TouchableOpacity style={{flex:1}}>
@@ -45,7 +46,7 @@ const miniPlayer = () => {
 const styles = StyleSheet.create({
   minImage: {
     height: 50,
-    marginLeft: 15,
+    marginLeft: 10,
     width:75,
     marginTop: 9,
   },
@@ -53,22 +54,24 @@ const styles = StyleSheet.create({
   title: {
     lineHeight: 15,
     color: '#ffffff',
-    marginLeft: 10,
-    width: 260,
+    marginLeft: -5,
+    width: 200,
     padding: 20,
     height:70,
+    fontSize:12
   },
   play: {
     color: '#ffffff',
-    width: 30,
-    height: 30,
-    marginTop:20
+    width: 25,
+    height: 25,
+    marginTop:20,
+    marginLeft:-5
   },
   close:{
-    width: 30,
-    height: 30,
+    width:22,
+    height: 24,
     marginTop:20,
-    marginLeft:50
+    marginLeft:30
   }
 });
 

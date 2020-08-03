@@ -34,9 +34,14 @@ export default function App() {
           },
         })}
         tabBarOptions={{
-          activeTintColor: 'tomato',
+          activeTintColor: 'red',
           inactiveTintColor: 'gray',
+          style:{
+            backgroundColor:"'#0C08C3"
+          }
         }}
+
+        
         initialRouteName={'Playlists'}
         >
         <Tab.Screen name="miniPlayer" component={miniPlayer}/>
