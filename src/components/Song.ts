@@ -13,7 +13,7 @@ const SongData: Array<Song> = [
         id: "jgZkrA8E5do",
         title: "TOULIVER x BINZ - -BIGCITYBOI- (Official Music Video)",
         channel: "Binz Da Poet",
-        url: "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
+        url: "http://42.112.17.21:8077/TOULIVER%20x%20BINZ%20-%20-BIGCITYBOI-%20(Official%20Music%20Video).mp4",
         genre: "V-Pop"
     },
     {
