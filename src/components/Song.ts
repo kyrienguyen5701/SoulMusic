@@ -10,11 +10,11 @@ export interface Song {
 
 const SongData: Array<Song> =[
     {
-      id: "jgZkrA8E5do",
-      title: "TOULIVER x BINZ - -BIGCITYBOI- (Official Music Video)",
-      channel: "Binz Da Poet",
-      url: "http://42.112.17.21:8077/TOULIVER%20x%20BINZ%20-%20-BIGCITYBOI-%20(Official%20Music%20Video).mp4",
-      genre: "V-Pop"
+        id: "jgZkrA8E5do",
+        title: "TOULIVER x BINZ - -BIGCITYBOI- (Official Music Video)",
+        channel: "Binz Da Poet",
+        url: "http://42.112.17.21:8077/TOULIVER%20x%20BINZ%20-%20-BIGCITYBOI-%20(Official%20Music%20Video).mp4",
+        genre: "V-Pop"
     },
     {
       id: "K-a8s8OLBSE",

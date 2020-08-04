@@ -1,44 +1,119 @@
 import React, {useRef, useState} from 'react';
 import {TouchableOpacity, View, Text, Image} from "react-native";
 import Video from "react-native-video";
-// import MediaControls, {PLAYER_STATES} from 'react-native-media-controls';
 import SeekBar from 'screens/Player/components/SeekBar';
 import LinearGradient from 'react-native-linear-gradient';
 
 
 const PlayerFullScreen = ({navigation, route}) => {
-    const song = route.params;
-    const player = useRef(null);
+    const {song, playlist} = route.params;
+    let audioElement = useRef(null);
     const [state, setState] = useState({
         isLoading: true,
         paused: false,
         isLooping: false,
         isFullScreen: false,
+        isShuffle: false,
         status: null,
         quality: null,
-        duration: 204,
+        duration: 0,
         currentTime: 0,
+        selectedSong: playlist.findIndex((element: Song) => element.id === song.id),
         error: null,
     });
 
+    const onLoadStart = (data) => {
+        setState(prevState => {
+            return {
+                ...prevState,
+                isLoading: true
+            }
+        })
+    }
+
     const setDuration = (data) => {
-        setState({duration: Math.floor(data.duration)});
+        setState(prevState => {
+            return {
+                ...prevState,
+                isLoading: false,
+                duration: Math.floor(data.duration)
+            }
+        });
     }
 
     const setTime = (data) => {
-        this.setState({currentTime: Math.floor(data.currentTime)});
+        setState(prevState => {
+            return {
+                ...prevState,
+                currentTime: Math.floor(data.currentTime)
+            }
+        });
     }
 
     const seek = (time) => {
         time = Math.round(time);
-        // this.refs.audioElement && this.refs.audioElement.seek(time);
-        this.setState({
-            currentPosition: time,
-            paused: false,
+        audioElement && audioElement.seek(time);
+        setState(prevState => {
+            return {
+                ...prevState,
+                currentTime: time,
+                paused: false
+            }
         });
     }
 
-    console.log(song.id)
+    const onBack = () => {
+        if (state.currentTime < 10 && state.selectedSong > 0) {
+            audioElement && audioElement.seek(0);
+            setState(prevState => {
+                return {
+                    ...prevState,
+                    isChanging: true
+                }
+            });
+            setTimeout(() => setState(prevState => {
+                return {
+                    ...prevState,
+                    currentTime: 0,
+                    paused: false,
+                    duration: 0,
+                    isChanging: false,
+                    selectedSong: prevState.selectedSong - 1,
+                }
+            }), 0);
+        } else {
+            audioElement.seek(0);
+            setState(prevState => {
+                return {
+                    ...prevState,
+                    currentTime: 0
+                }
+            });
+        }
+    }
+
+    const onForward = () => {
+        if (state.selectedSong < playlist.length - 1) {
+            audioElement && audioElement.seek(0);
+            setState(prevState => {
+                return {
+                    ...prevState,
+                    isChanging: true
+                }
+            });
+            setTimeout(() => setState(prevState => {
+                return {
+                    ...prevState,
+                    currentTime: 0,
+                    paused: false,
+                    isChanging: false,
+                    selectedSong: prevState.selectedSong + 1,
+                }
+            }), 0);
+        }
+    }
+
+    console.log(playlist[state.selectedSong].id);
 
     return (
         <LinearGradient colors={['#0C08C4', '#030239', '#000000']}>
@@ -56,9 +131,9 @@ const PlayerFullScreen = ({navigation, route}) => {
                     display: 'flex',
                     flexDirection: 'row'
                 }}>
-                    <Image style={{
-                        
-                    }} source={require('assets/down.png')} />
+                    <TouchableOpacity onPress={()=>navigation.goBack()}>
+                        <Image source={require('assets/down.png')} />
+                    </TouchableOpacity>
                     <Text style={{
                         marginHorizontal: 12,
                         width: '80%',
@@ -86,11 +161,15 @@ const PlayerFullScreen = ({navigation, route}) => {
                     marginTop: 15
                 }}>
                     <Video
-                        source={{uri: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"}}
+                        source={{uri: playlist[state.selectedSong].url}}
+                        ref={(ref) => {audioElement = ref}}
                         playInBackground={true}
                         paused={state.paused}
-                        // onLoad={setDuration.bind(this)}    // Callback when video loads
-                        // onProgress={setTime.bind(this)}
+                        onLoadStart={onLoadStart}
+                        onLoad={setDuration}
+                        onEnd={onForward}
+                        onProgress={setTime}
+                        forwardDisabled={state.selectedSong === playlist.length - 1}
                         style={{
                             width: "100%",
                             height: 100,
@@ -100,22 +179,16 @@ const PlayerFullScreen = ({navigation, route}) => {
                     />
                 </View>
                 <View>
-                    {/*<MediaControls*/}
-                    {/*    duration={state.duration}*/}
-                    {/*    isFullScreen={state.isFullScreen}*/}
-                    {/*    isLoading={state.isLoading}*/}
-                    {/*    mainColor={'#333'}*/}
-                    {/*    onPaused={onPaused}*/}
-                    {/*    onReplay={onReplay}*/}
-                    {/*    onSeek={onSeek}*/}
-                    {/*    onSeeking={onSeeking}*/}
-                    {/*    playerState={state.playerState}*/}
-                    {/*    progress={state.currentTime}*/}
-                    {/*/>*/}
                     <SeekBar
                         trackLength={state.duration}
                         currentPosition={state.currentTime}
-                        // onSlidingStart={() => setState({paused: true})}
+                        onSlidingStart={() => setState(prevState => {
+                            return {
+                                ...prevState,
+                                paused: true
+                            }
+                        })}
+                        onSeek={seek}
                     />
                 </View>
                 <View style={{
@@ -125,7 +198,7 @@ const PlayerFullScreen = ({navigation, route}) => {
                     justifyContent: "space-evenly",
                     marginTop: 50
                 }}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={onBack}>
                         <Image source={require('assets/previous.png')} />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => setState(prevState => {
@@ -139,7 +212,7 @@ const PlayerFullScreen = ({navigation, route}) => {
                             : <Image source={require('assets/pause.png')} />
                         }
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={onForward}>
                         <Image source={require('assets/next.png')} />
                     </TouchableOpacity>
                 </View>
@@ -149,16 +222,33 @@ const PlayerFullScreen = ({navigation, route}) => {
                     justifyContent: "space-evenly",
                     marginTop: 100
                 }}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+                        setState(prevState => {
+                            return {
+                                ...prevState,
+                                isShuffle: !prevState.isShuffle
+                            }
+                        })
+                    }}>
                         <Image source={require('assets/shuffle.png')} />
                     </TouchableOpacity>
                     <TouchableOpacity>
                         <Image source={require('assets/favorite.png')} />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={ () => {
-                        setState({isLooping: !state.isLooping})
+                        setState(prevState => {
+                            return {
+                                ...prevState,
+                                isLooping: !prevState.isLooping
+                            }
+                        })
+                        audioElement.seek(0)
                     }}>
-                        <Image source={require('assets/repeat.png')} />
+                        <Image source={require('assets/repeat.png')}
+                               style={{
+                                   tintColor: state.isLooping ? 'green' : 'white'
+                               }}
+                        />
                     </TouchableOpacity>
                     <TouchableOpacity>
                         <Image source={require('assets/download.png')} />

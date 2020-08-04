@@ -4,7 +4,10 @@ import {useNavigation} from "@react-navigation/native";
 import {Image, Text, TouchableOpacity, View} from "react-native";
 import {width_screen} from "screens/Playlists/DefaultPlaylists";
 
-const Recent = (props: Song) => {
+const Recent = (props: {
+    song: Song,
+    playlist: Array<Song>
+}) => {
     const navigation = useNavigation();
 
     return (
@@ -30,7 +33,7 @@ const Recent = (props: Song) => {
                     marginTop:6,
                    opacity:0.8
                 }}>
-                    {props.title}
+                    {props.song.title}
                 </Text>
             </TouchableOpacity>
         </View>
