@@ -58,13 +58,10 @@ const DefaultPlaylists = () => {
                         data={SongData.slice(0, 10)}
                         horizontal={true}
                         renderItem={({item})=>{
-                        return <Recent
-                            id={item.id}
-                            title={item.title}
-                            channel={item.channel}
-                            genre={item.genre}
-                            url={item.url}
-                        />
+                            return <Recent
+                                song={item}
+                                playlist={SongData.slice(0, 10)}
+                            />
                     }} />
                 </View>
                 <View style={{
