@@ -1,3 +1,5 @@
+import {useEffect, useState} from "react";
+
 export interface Song {
     id: string,
     title: string,
@@ -164,5 +166,8 @@ const SongData: Array<Song> =[
       genre: "K-Pop"
     }
   ]
+
+
+
 
 export default SongData;

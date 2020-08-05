@@ -12,7 +12,6 @@ import {TextInput, FlatList} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import {Song} from 'components/Song';
 import {useNavigation} from '@react-navigation/native';
-import {createConfigItem} from '@babel/core';
 
 export const width_screen = Dimensions.get('window').width;
 
@@ -175,7 +174,7 @@ const styles = StyleSheet.create({
     marginRight: 15,
     marginTop: 20,
     borderRadius:10
-  
+
   },
   top: {
     fontSize: 12,
