@@ -39,11 +39,11 @@ const DefaultPlaylists = () => {
         }}>
             <View style={{
                 marginHorizontal: 16,
-              
+
             }}>
                 <View style={{
                     marginTop: 41,
-                    
+
                 }}>
                     <Text style={{
                         fontSize: 30,
@@ -60,6 +60,7 @@ const DefaultPlaylists = () => {
                 </View>
                 <View>
                     <FlatList
+                        keyExtractor={(item, index) => index}
                         data={SongData.slice(0, 10)}
                         horizontal={true}
                         renderItem={({item})=>{
@@ -75,6 +76,7 @@ const DefaultPlaylists = () => {
                     flexWrap: 'wrap'
                 }}>
                     <FlatList
+                        keyExtractor={(item, index) => index}
                         data={BasicGenres}
                         renderItem={({item}) => {
                             return <PlaylistButton title={item} />

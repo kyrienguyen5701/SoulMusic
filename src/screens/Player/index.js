@@ -16,7 +16,7 @@ const PlayerFullScreen = ({navigation, route}) => {
         quality: null,
         duration: 0,
         currentTime: 0,
-        selectedSong: playlist.findIndex((element: Song) => element.id === song.id),
+        selectedSong: playlist.findIndex((element) => element.id === song.id),
         error: null,
     });
 
@@ -199,7 +199,7 @@ const PlayerFullScreen = ({navigation, route}) => {
                     <TouchableOpacity>
                         <Image source={require('assets/timer.png')} />
                     </TouchableOpacity>
-                   
+
                 </View>
                 <Text style={{
                     color:"#ffffff",
@@ -226,7 +226,7 @@ const PlayerFullScreen = ({navigation, route}) => {
                             width: "100%",
                             height: 100,
                             flex: 1,
-                            
+
                         }}
                     />
                 </View>

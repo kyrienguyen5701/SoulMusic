@@ -4,12 +4,12 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Playlists from 'screens/Playlists';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Player from 'screens/Player';
-import SearchBar from 'screens/Search/components/SearchBar';
 import DefaultSearch from 'screens/Search/DefaultSearch';
 import miniPlayer from 'screens/Player/miniPlayer';
 import PlayerFullScreen from 'screens/Player';
 import {enableScreens} from 'react-native-screens';
 import {View, Text, TouchableOpacity} from 'react-native';
+import SearchBar from 'screens/Search/components/SearchBar';
 enableScreens();
 
 

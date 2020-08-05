@@ -1,14 +1,38 @@
-import React from 'react';
-import {FlatList, Image, Text, TouchableOpacity, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ActivityIndicator, FlatList, Image, Text, TouchableOpacity, View} from 'react-native';
 import ShuffleButton from 'components/ShuffleButton';
-import SongData from 'components/Song';
+import SongData, { Song } from 'components/Song';
 import Recent from 'screens/Playlists/Recent';
 import LinearGradient from 'react-native-linear-gradient';
 
 const Playlist = ({navigation, route}) => {
   const genre = route.params;
-  const data = SongData.filter((song) => song.genre == genre);
-  console.log(data);
+  const [data, setData] = useState(Array<Song>());
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+      fetch('https://5f22da500e9f660016d8893d.mockapi.io/SoulMusic/Api/Songs')
+          .then((res) => {return res.json()})
+          .then((res) => {
+              setData(res.filter((song: Song) => song.genre == genre));
+              console.log(res);
+          })
+          .catch((error) => console.log("Error: ", error))
+          .finally(() => {setLoading(false)})
+  })
+
+  if (loading) {
+    return (
+        <View style={{
+            flex: 1,
+            backgroundColor: '#FFF',
+            justifyContent: 'center',
+            alignItems: 'center'
+        }}>
+            <ActivityIndicator />
+        </View>
+    )
+  }
 
   return (
 <LinearGradient colors={['#0C08C4', '#030239', '#000000']}>
@@ -46,6 +70,7 @@ const Playlist = ({navigation, route}) => {
         </View>
         <View>
           <FlatList
+            keyExtractor={(item, index) => index}
             data={data}
             showsVerticalScrollIndicator={false}
             renderItem={({item})=>{
