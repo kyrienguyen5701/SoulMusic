@@ -41,11 +41,8 @@ const Playlist = ({navigation, route}) => {
                     <FlatList data={data}
                               renderItem={({item})=>{
                                   return <Recent
-                                      id={item.id}
-                                      title={item.title}
-                                      channel={item.channel}
-                                      genre={item.genre}
-                                      url={item.url}
+                                      song={item}
+                                      playlist={data}
                                   />
                               }} />
                 </View>

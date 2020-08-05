@@ -20,7 +20,7 @@ const SongData: Array<Song> = [
         id: "K-a8s8OLBSE",
         title: "Taylor Swift - cardigan (Official Music Video)",
         channel: "Taylor Swift",
-        url: "https://drive.google.com/file/d/1KkCfcfcSJlJLXExv-3152YAF7bJrk-71/view?usp=sharing",
+        url: "http://42.112.17.21:8077/Taylor%20Swift%20-%20cardigan%20(Official%20Music%20Video).mp4",
         genre: "Pop"
     },
     {
