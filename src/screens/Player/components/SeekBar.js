@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import {View, Text, StyleSheet, Image, TouchableOpacity,} from 'react-native';
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import Slider from '@react-native-community/slider';
 
 function pad(n, width, z=0) {
