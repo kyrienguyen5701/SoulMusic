@@ -18,7 +18,7 @@ const Recent = (props: {
                                   paddingVertical: 12,
                                   
                               }}>
-                <Image source={{uri: `https://i.ytimg.com/vi/${props.id}/hqdefault.jpg`}}
+                <Image source={{uri: `https://i.ytimg.com/vi/${props.song.id}/hqdefault.jpg`}}
                        style={{
                            width: width_screen * .40,
                            height: width_screen * .23,
