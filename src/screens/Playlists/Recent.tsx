@@ -16,15 +16,22 @@ const Recent = (props: {
                               style={{
                                   marginRight: 12,
                                   paddingVertical: 12,
+                                  
                               }}>
                 <Image source={{uri: `https://i.ytimg.com/vi/${props.song.id}/hqdefault.jpg`}}
                        style={{
-                           width: width_screen * .45,
-                           height: width_screen * .30,
+                           width: width_screen * .40,
+                           height: width_screen * .23,
+                           borderRadius:5
                        }}/>
-                <Text style={{
-                    width: width_screen * .45,
-                    fontSize: 12.5
+                <Text 
+                 numberOfLines={2}
+                style={{
+                    width: width_screen * .40,
+                    fontSize: 10,
+                    color: '#D87777',
+                    marginTop:6,
+                   opacity:0.8
                 }}>
                     {props.song.title}
                 </Text>

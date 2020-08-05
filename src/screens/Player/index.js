@@ -2,6 +2,7 @@ import React, {useCallback, useRef, useState} from 'react';
 import {TouchableOpacity, View, Text, Image} from "react-native";
 import Video from "react-native-video";
 import SeekBar from 'screens/Player/components/SeekBar';
+import LinearGradient from 'react-native-linear-gradient';
 
 const PlayerFullScreen = ({navigation, route}) => {
     const {song, playlist} = route.params;
@@ -170,13 +171,16 @@ const PlayerFullScreen = ({navigation, route}) => {
     )
 
     return (
+        <LinearGradient colors={['#0C08C4', '#030239', '#000000']}>
+
         <View style={{
-            backgroundColor: 'red',
+
             height: '100%',
         }}>
             <View style={{
                 marginHorizontal: 16,
                 marginVertical: 20,
+                marginTop:35
             }}>
                 <View style={{
                     display: 'flex',
@@ -189,17 +193,24 @@ const PlayerFullScreen = ({navigation, route}) => {
                         marginHorizontal: 12,
                         width: '80%',
                         textAlign: 'center',
-                        fontSize: 20
+                        fontSize: 20,
+                        color:"#D87777",
                     }}>{playlist[state.selectedSong].title}</Text>
                     <TouchableOpacity>
                         <Image source={require('assets/timer.png')} />
                     </TouchableOpacity>
+                   
                 </View>
+                <Text style={{
+                    color:"#ffffff",
+                    textAlign:'center',
+                    opacity:0.7
+                }}>{song.channel}</Text>
                 <View style={{
                     width: "100%",
                     height: 200,
                     backgroundColor: "azure",
-                    marginTop: 12
+                    marginTop: 15
                 }}>
                     <Video
                         source={{uri: playlist[state.selectedSong].url}}
@@ -214,7 +225,8 @@ const PlayerFullScreen = ({navigation, route}) => {
                         style={{
                             width: "100%",
                             height: 100,
-                            flex: 1
+                            flex: 1,
+                            
                         }}
                     />
                 </View>
@@ -274,7 +286,7 @@ const PlayerFullScreen = ({navigation, route}) => {
                 </View>
             </View>
         </View>
-
+</LinearGradient>
     );
 }
 
