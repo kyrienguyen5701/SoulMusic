@@ -15,7 +15,6 @@ const Playlist = ({navigation, route}) => {
           .then((res) => {return res.json()})
           .then((res) => {
               setData(res.filter((song: Song) => song.genre == genre));
-              console.log(res);
           })
           .catch((error) => console.log("Error: ", error))
           .finally(() => {setLoading(false)})

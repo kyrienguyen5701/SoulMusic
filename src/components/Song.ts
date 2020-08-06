@@ -167,7 +167,4 @@ const SongData: Array<Song> =[
     }
   ]
 
-
-
-
 export default SongData;
