@@ -3,6 +3,7 @@ import {TouchableOpacity, View, Text, Image} from "react-native";
 import Video from "react-native-video";
 import SeekBar from 'screens/Player/components/SeekBar';
 import LinearGradient from 'react-native-linear-gradient';
+import Controls from 'screens/Player/components/Controls';
 
 const PlayerFullScreen = ({navigation, route}) => {
     const {song, playlist} = route.params;
@@ -11,12 +12,14 @@ const PlayerFullScreen = ({navigation, route}) => {
         isLoading: true,
         paused: false,
         isLooping: false,
+        isShuffle: false,
         isFullScreen: false,
-        status: null,
-        quality: null,
         duration: 0,
         currentTime: 0,
-        selectedSong: playlist.findIndex((element) => element.id === song.id),
+        indexAtSource: playlist.findIndex((element) => element.id === song.id),
+        playedSongs: [song],
+        pendingSongs: playlist.filter((element) => element.id != song.id),
+        selectedSong: 0,
         error: null,
     });
 
@@ -30,6 +33,17 @@ const PlayerFullScreen = ({navigation, route}) => {
             })
         }, [state.isLoading]
     );
+
+    const onSlidingStart = useCallback(
+        () => {
+            setState(prevState => {
+                return {
+                    ...prevState,
+                    paused: true
+                }
+            })
+        }, [state.paused]
+    )
 
     const setDuration = useCallback(
         (data) => {
@@ -63,54 +77,40 @@ const PlayerFullScreen = ({navigation, route}) => {
         }, [state.isLooping]
     )
 
-    const seek = useCallback(
-        (time) => {
-            console.log(playlist[state.selectedSong].id)
-            time = Math.round(time);
-            audioElement && audioElement.seek(time);
+    const seek = (time) => {
+        console.log(playlist[state.indexAtSource].id)
+        time = Math.round(time);
+        audioElement && audioElement.seek(time);
+        setState(prevState => {
+            return {
+                ...prevState,
+                currentTime: time,
+                paused: false
+            }
+        });
+    }
+
+    const setShuffle = useCallback(
+        () => {
             setState(prevState => {
                 return {
                     ...prevState,
-                    currentTime: time,
-                    paused: false
+                    isShuffle: !prevState.isShuffle
                 }
-            });
-        }, []
-    );
-
-    const loop = useCallback(
-        () => {
-            if (state.isLooping) {
-                audioElement.seek(0)
-                setState(prevState => {
-                    return {
-                        ...prevState,
-                        currentTime: 0,
-                        paused: false
-                    }
-                })
-            };
-        }, [state.isLooping]
+            })
+        }, [state.isShuffle]
     )
 
     const back = useCallback(
         () => {
             if (state.currentTime < 10 && state.selectedSong > 0) {
                 audioElement && audioElement.seek(0);
-                setState(prevState => {
-                    return {
-                        ...prevState,
-                        isChanging: true
-                    }
-                });
                 setTimeout(() => setState(prevState => {
                     return {
                         ...prevState,
                         currentTime: 0,
                         paused: false,
-                        duration: 0,
-                        isChanging: false,
-                        selectedSong: prevState.selectedSong - 1,
+                        selectedSong: prevState.selectedSong - 1
                     }
                 }), 0);
             } else {
@@ -127,37 +127,33 @@ const PlayerFullScreen = ({navigation, route}) => {
 
     const forward = useCallback(
         () => {
-            if (state.selectedSong < playlist.length - 1) {
+            if (state.pendingSongs.length < playlist.length) {
                 audioElement && audioElement.seek(0);
-                setState(prevState => {
-                    return {
-                        ...prevState,
-                        isChanging: true
-                    }
-                });
                 setTimeout(() => setState(prevState => {
+                    let indexAtSource = prevState.indexAtSource;
+                    if(prevState.selectedSong === prevState.playedSongs.length - 1) {
+                        indexAtSource = prevState.indexAtSource + 1;
+                        if (prevState.isShuffle) {
+                            let next = parseInt(Math.random() * prevState.pendingSongs.length);
+                            indexAtSource = playlist.findIndex((element) => element.id === prevState.pendingSongs[next].id)
+                            console.log(indexAtSource);
+                        }
+                    }
+                    const toBeNext = playlist[indexAtSource];
                     return {
                         ...prevState,
                         currentTime: 0,
                         paused: false,
-                        isChanging: false,
-                        selectedSong: prevState.selectedSong + 1,
+                        indexAtSource: indexAtSource,
+                        playedSongs: prevState.playedSongs.concat([toBeNext]),
+                        pendingSongs: prevState.pendingSongs.filter((element) => element.id != toBeNext.id),
+                        selectedSong: prevState.selectedSong + 1
                     }
                 }), 0);
             }
-        }, [state.selectedSong]
+        }, [state.selectedSong,state.indexAtSource]
     );
 
-    const onSlidingStart = useCallback(
-        () => {
-            setState(prevState => {
-                return {
-                    ...prevState,
-                    paused: true
-                }
-            })
-        }, [state.paused]
-    )
 
     const pause = useCallback(
         () => {
@@ -174,7 +170,6 @@ const PlayerFullScreen = ({navigation, route}) => {
         <LinearGradient colors={['#0C08C4', '#030239', '#000000']}>
 
         <View style={{
-
             height: '100%',
         }}>
             <View style={{
@@ -195,7 +190,7 @@ const PlayerFullScreen = ({navigation, route}) => {
                         textAlign: 'center',
                         fontSize: 20,
                         color:"#D87777",
-                    }}>{playlist[state.selectedSong].title}</Text>
+                    }}>{state.playedSongs[state.selectedSong].title}</Text>
                     <TouchableOpacity>
                         <Image source={require('assets/timer.png')} />
                     </TouchableOpacity>
@@ -205,7 +200,7 @@ const PlayerFullScreen = ({navigation, route}) => {
                     color:"#ffffff",
                     textAlign:'center',
                     opacity:0.7
-                }}>{song.channel}</Text>
+                }}>{state.playedSongs[state.selectedSong].channel}</Text>
                 <View style={{
                     width: "100%",
                     height: 200,
@@ -213,15 +208,15 @@ const PlayerFullScreen = ({navigation, route}) => {
                     marginTop: 15
                 }}>
                     <Video
-                        source={{uri: playlist[state.selectedSong].url}}
+                        source={{uri: state.playedSongs[state.selectedSong].url}}
                         ref={(ref) => {audioElement = ref}}
                         playInBackground={true}
                         paused={state.paused}
+                        repeat={state.isLooping}
                         onLoadStart={onLoadStart}
                         onLoad={setDuration}
-                        onEnd={state.isLooping ? loop : forward}
+                        onEnd={state.indexAtSource === playlist.length - 1 ? pause : forward}
                         onProgress={setTime}
-                        forwardDisabled={state.selectedSong === playlist.length - 1}
                         style={{
                             width: "100%",
                             height: 100,
@@ -237,53 +232,19 @@ const PlayerFullScreen = ({navigation, route}) => {
                         onSlidingStart={onSlidingStart}
                         onSeek={seek}
                     />
+                    <Controls
+                        paused={state.paused}
+                        pause={pause}
+                        back={back}
+                        forward={forward}
+                        forwardDisabled={state.selectedSong === playlist.length - 1}
+                        isLooping={state.isLooping}
+                        setLoop={setLoop}
+                        isShuffle={state.isShuffle}
+                        setShuffle={setShuffle}
+                    />
                 </View>
-                <View style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: "center",
-                    justifyContent: "space-evenly",
-                    marginTop: 50
-                }}>
-                    <TouchableOpacity onPress={back}>
-                        <Image source={require('assets/previous.png')} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={pause}>
-                        {state.paused
-                            ? <Image source={require('assets/play-button.png')} />
-                            : <Image source={require('assets/pause.png')} />
-                        }
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={forward}>
-                        <Image source={require('assets/next.png')} />
-                    </TouchableOpacity>
-                </View>
-                <View style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: "space-evenly",
-                    marginTop: 100
-                }}>
-                    <TouchableOpacity>
-                        <Image source={require('assets/shuffle.png')} />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Image source={require('assets/favorite.png')} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={setLoop}>
-                        <Image source={require('assets/repeat.png')}
-                               style={{
-                                   tintColor: state.isLooping ? 'green' : 'white'
-                               }}
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Image source={require('assets/download.png')} />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Image source={require('assets/add.png')} />
-                    </TouchableOpacity>
-                </View>
+
             </View>
         </View>
 </LinearGradient>
