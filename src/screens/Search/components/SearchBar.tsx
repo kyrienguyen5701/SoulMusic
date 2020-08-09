@@ -55,7 +55,7 @@ const SearchBar = () => {
 
                     {loading ?<ActivityIndicator style={{marginTop:10}} size="large" color="red"/>:null }
                     <FlatList
-                        keyExtractor={(item, index) => index}
+                        keyExtractor={(item, index) => index.toString()}
                         data={results}
                         renderItem={({item})=>{
                             return <SearchResult

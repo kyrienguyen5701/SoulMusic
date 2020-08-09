@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, FlatList, Image, Text, TouchableOpacity, View} from 'react-native';
 import ShuffleButton from 'components/ShuffleButton';
-import SongData, { Song } from 'components/Song';
+import {Song} from 'components/Song';
 import Recent from 'screens/Playlists/Recent';
 import LinearGradient from 'react-native-linear-gradient';
 
+// @ts-ignore
 const Playlist = ({navigation, route}) => {
   const genre = route.params;
   const [data, setData] = useState(Array<Song>());
@@ -69,7 +70,7 @@ const Playlist = ({navigation, route}) => {
         </View>
         <View>
           <FlatList
-            keyExtractor={(item, index) => index}
+            keyExtractor={(item, index) => index.toString()}
             data={data}
             showsVerticalScrollIndicator={false}
             renderItem={({item})=>{

@@ -2,8 +2,8 @@ import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import {Dimensions, Image, TouchableOpacity, View, Text} from "react-native";
 import {Song} from "components/Song";
-
-const SearchResult = (props) => {
+// @ts-ignore
+ const SearchResult = (props) => {
     const navigation = useNavigation();
     return(
         <View>
@@ -41,9 +41,6 @@ const SearchResult = (props) => {
                         </Text>
                     </View>
                 </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-                <Image source={require('assets/add.png')} />
             </TouchableOpacity>
         </View>
 
