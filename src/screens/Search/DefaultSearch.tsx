@@ -107,7 +107,7 @@ const DefaultSearch = (props: Song) => {
         <ImageBackground source={require('assets/Rectangle99.png')} style={styles.container}>
          <View style={styles.container}>
             <FlatList
-              keyExtractor={(item, index) => index}
+              keyExtractor={(item, index) => index.toString()}
               data={data}
               renderItem={({item}) => (
                 <TouchableOpacity style={{height: 70 , borderRadius: 10,}}>

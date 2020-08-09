@@ -1,13 +1,21 @@
-import {useEffect, useState} from "react";
 
 export interface Song {
     id: string,
     title: string,
     channel: string,
-    genre?: string,
+    genre: string,
     url: any
-    // views: string,
-    // thumbnails: object
+}
+
+const SongSchema = {
+    name: 'Song',
+    properties: {
+        id: 'string',
+        title: 'string',
+        channel: 'string',
+        genre: 'string',
+        url: 'any'
+    }
 }
 
 const SongData: Array<Song> =[
@@ -167,4 +175,7 @@ const SongData: Array<Song> =[
     }
   ]
 
-export default SongData;
+export {
+    SongData,
+    SongSchema
+};

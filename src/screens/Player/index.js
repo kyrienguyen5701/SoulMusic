@@ -1,19 +1,20 @@
 import React, {useCallback, useRef, useState} from 'react';
-import {TouchableOpacity, View, Text, Image} from "react-native";
+import {TouchableOpacity, View, Text, Image, Animated} from 'react-native';
 import Video from "react-native-video";
 import SeekBar from 'screens/Player/components/SeekBar';
 import LinearGradient from 'react-native-linear-gradient';
 import Controls from 'screens/Player/components/Controls';
+import {useSelector} from 'react-redux';
 
-const PlayerFullScreen = ({navigation, route}) => {
-    const {song, playlist} = route.params;
+const Player = () => {
+    const {song, playlist} = useSelector(state => state.chosen)
     let audioElement = useRef(null);
     const [state, setState] = useState({
         isLoading: true,
         paused: false,
         isLooping: false,
         isShuffle: false,
-        isFullScreen: false,
+        visible: false,
         duration: 0,
         currentTime: 0,
         indexAtSource: playlist.findIndex((element) => element.id === song.id),
@@ -22,6 +23,7 @@ const PlayerFullScreen = ({navigation, route}) => {
         selectedSong: 0,
         error: null,
     });
+    const y = new Animated.Value(1000)
 
     const onLoadStart = useCallback(
         (data) => {
@@ -166,92 +168,159 @@ const PlayerFullScreen = ({navigation, route}) => {
         }, [state.paused]
     )
 
+    const slideUp = useCallback(
+        () => {
+            Animated.spring(y, {
+                toValue: 0,
+                duration: 2000,
+                useNativeDriver: true
+            }).start();
+            setState(prevState => {
+                return {
+                    ...prevState,
+                    visible: !prevState.visible
+                }
+            });
+        }, [y, state.visible]
+    )
+
+    const slideDown = useCallback(
+        () => {
+            Animated.spring(y, {
+                toValue: -1000,
+                duration: 2000,
+                useNativeDriver: true
+            }).start();
+            setState(prevState => {
+                return {
+                    ...prevState,
+                    visible: !prevState.visible
+                }
+            });
+        }, [y, state.visible]
+    )
+
     return (
-        <LinearGradient colors={['#0C08C4', '#030239', '#000000']}>
+        {...playlist.length != 0
+        ? (
+            <View>
+                {/*<TouchableOpacity onPress={slideUp} style={{*/}
+                {/*    marginTop: 600,*/}
+                {/*    backgroundColor: '#030239',*/}
+                {/*    flexDirection: 'row',*/}
+                {/*    height:300,*/}
+                {/*    width: '100%',*/}
+                {/*}}>*/}
+                {/*    <Image*/}
+                {/*        // style={styles.minImage}*/}
+                {/*        source={{uri: `https://i.ytimg.com/vi/${state.playedSongs[state.selectedSong].id}/hqdefault.jpg`}}*/}
+                {/*    />*/}
+                {/*    <Text numberOfLines={2}*/}
+                {/*          // style={styles.title}*/}
+                {/*    >*/}
+                {/*        {state.playedSongs[state.selectedSong].title}*/}
+                {/*    </Text>*/}
+                {/*    <TouchableOpacity style={{flex:1}}>*/}
+                {/*        <Image*/}
+                {/*            // style={styles.play}*/}
+                {/*            source={require('assets/play-button.png')}*/}
+                {/*        />*/}
+                {/*    </TouchableOpacity>*/}
+                {/*    <TouchableOpacity style={{flex:1}}>*/}
+                {/*        <Image*/}
+                {/*            // style={styles.close}*/}
+                {/*            source={require('assets/x.png')}*/}
+                {/*        />*/}
+                {/*    </TouchableOpacity>*/}
+                {/*</TouchableOpacity>*/}
+                <Animated.View>
+                    <LinearGradient colors={['#0C08C4', '#030239', '#000000']}>
 
-        <View style={{
-            height: '100%',
-        }}>
-            <View style={{
-                marginHorizontal: 16,
-                marginVertical: 20,
-                marginTop:35
-            }}>
-                <View style={{
-                    display: 'flex',
-                    flexDirection: 'row'
-                }}>
-                    <TouchableOpacity onPress={()=>navigation.goBack()}>
-                        <Image source={require('assets/down.png')} />
-                    </TouchableOpacity>
-                    <Text style={{
-                        marginHorizontal: 12,
-                        width: '80%',
-                        textAlign: 'center',
-                        fontSize: 20,
-                        color:"#D87777",
-                    }}>{state.playedSongs[state.selectedSong].title}</Text>
-                    <TouchableOpacity>
-                        <Image source={require('assets/timer.png')} />
-                    </TouchableOpacity>
+                        <View style={{
+                            height: '100%',
+                        }}>
+                            <View style={{
+                                marginHorizontal: 16,
+                                marginVertical: 20,
+                                marginTop:35
+                            }}>
+                                <View style={{
+                                    display: 'flex',
+                                    flexDirection: 'row'
+                                }}>
+                                    <TouchableOpacity onPress={slideDown}>
+                                        <Image source={require('assets/down.png')} />
+                                    </TouchableOpacity>
+                                    <Text style={{
+                                        marginHorizontal: 12,
+                                        width: '80%',
+                                        textAlign: 'center',
+                                        fontSize: 20,
+                                        color:"#D87777",
+                                    }}>{state.playedSongs[state.selectedSong].title}</Text>
+                                    <TouchableOpacity>
+                                        <Image source={require('assets/timer.png')} />
+                                    </TouchableOpacity>
 
-                </View>
-                <Text style={{
-                    color:"#ffffff",
-                    textAlign:'center',
-                    opacity:0.7
-                }}>{state.playedSongs[state.selectedSong].channel}</Text>
-                <View style={{
-                    width: "100%",
-                    height: 200,
-                    backgroundColor: "azure",
-                    marginTop: 15
-                }}>
-                    <Video
-                        source={{uri: state.playedSongs[state.selectedSong].url}}
-                        ref={(ref) => {audioElement = ref}}
-                        playInBackground={true}
-                        paused={state.paused}
-                        repeat={state.isLooping}
-                        onLoadStart={onLoadStart}
-                        onLoad={setDuration}
-                        onEnd={state.indexAtSource === playlist.length - 1 ? pause : forward}
-                        onProgress={setTime}
-                        style={{
-                            width: "100%",
-                            height: 100,
-                            flex: 1,
-
-                        }}
-                    />
-                </View>
-                <View>
-                    <SeekBar
-                        trackLength={state.duration}
-                        currentPosition={state.currentTime}
-                        onSlidingStart={onSlidingStart}
-                        onSeek={seek}
-                    />
-                    <Controls
-                        paused={state.paused}
-                        pause={pause}
-                        back={back}
-                        forward={forward}
-                        forwardDisabled={state.selectedSong === playlist.length - 1}
-                        isLooping={state.isLooping}
-                        setLoop={setLoop}
-                        isShuffle={state.isShuffle}
-                        setShuffle={setShuffle}
-                    />
-                </View>
-
+                                </View>
+                                <Text style={{
+                                    color:"#ffffff",
+                                    textAlign:'center',
+                                    opacity:0.7
+                                }}>{state.playedSongs[state.selectedSong].channel}</Text>
+                                <View style={{
+                                    width: "100%",
+                                    height: 200,
+                                    backgroundColor: "azure",
+                                    marginTop: 15
+                                }}>
+                                    <Video
+                                        source={{uri: state.playedSongs[state.selectedSong].url}}
+                                        ref={(ref) => {audioElement = ref}}
+                                        playInBackground={true}
+                                        paused={state.paused}
+                                        repeat={state.isLooping}
+                                        onLoadStart={onLoadStart}
+                                        onLoad={setDuration}
+                                        onEnd={state.indexAtSource === playlist.length - 1 ? pause : forward}
+                                        onProgress={setTime}
+                                        style={{
+                                            width: "100%",
+                                            height: 100,
+                                            flex: 1,
+                                        }}
+                                    />
+                                </View>
+                                <View>
+                                    <SeekBar
+                                        trackLength={state.duration}
+                                        currentPosition={state.currentTime}
+                                        onSlidingStart={onSlidingStart}
+                                        onSeek={seek}
+                                    />
+                                    <Controls
+                                        paused={state.paused}
+                                        pause={pause}
+                                        back={back}
+                                        forward={forward}
+                                        forwardDisabled={state.selectedSong === playlist.length - 1}
+                                        isLooping={state.isLooping}
+                                        setLoop={setLoop}
+                                        isShuffle={state.isShuffle}
+                                        setShuffle={setShuffle}
+                                    />
+                                </View>
+                            </View>
+                        </View>
+                    </LinearGradient>
+                </Animated.View>
             </View>
-        </View>
-</LinearGradient>
-    );
+
+        ) : null}
+    )
+
+
+
 }
 
-export default PlayerFullScreen;
-
-
-
+export default Player;

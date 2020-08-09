@@ -10,8 +10,11 @@ const Controls = ({
     isLooping,
     setLoop,
     isShuffle,
-    setShuffle
+    setShuffle,
+    isFavorite,
+    setFavorite
   }) => {
+
     return (
         <View>
             <View style={{
@@ -47,8 +50,12 @@ const Controls = ({
                            }}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity>
-                    <Image source={require('assets/favorite.png')} />
+                <TouchableOpacity onPress={setFavorite} disabled={true}>
+                    <Image source={require('assets/favorite.png')}
+                           style={{
+                               tintColor: isFavorite ? 'red' : 'white'
+                           }}
+                    />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={setLoop}>
                     <Image source={require('assets/repeat.png')}
