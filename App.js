@@ -12,7 +12,6 @@ import {enableScreens} from 'react-native-screens';
 import {View, Text, TouchableOpacity} from 'react-native';
 enableScreens();
 
-
 const Tab = createBottomTabNavigator();
 
 export default function App() {
@@ -30,22 +29,20 @@ export default function App() {
             } else if (route.name === 'More') {
               iconName = 'ellipsis-h';
             }
-            return <Icon name={iconName} size={size} color={color} />;
+            return <Icon name={iconName} size={30} color={color} />;
           },
         })}
         tabBarOptions={{
-          activeTintColor: 'red',
-          inactiveTintColor: 'gray',
+          activeTintColor: '#FD0000',
+          inactiveTintColor: '#0063F8',
           tabStyle: {
             backgroundColor: '#0C08C3',
-            height:90
+            height: 90,
           },
         }}
         initialRouteName={'Playlists'}>
-        <Tab.Screen name="miniPlayer" component={miniPlayer} />
         <Tab.Screen name="DefaultSearch" component={DefaultSearch} />
         <Tab.Screen name="Playlists" component={Playlists} />
-        <Tab.Screen name="Player" component={Player} />
         <Tab.Screen name="More" component={SearchBar} />
       </Tab.Navigator>
     </NavigationContainer>
