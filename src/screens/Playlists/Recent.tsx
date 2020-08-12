@@ -3,20 +3,21 @@ import {Song} from "components/Song";
 import {useNavigation} from "@react-navigation/native";
 import {Image, Text, TouchableOpacity, View} from "react-native";
 import {width_screen} from "screens/Playlists/DefaultPlaylists";
+import {useDispatch} from "react-redux";
+import {chosenSong} from "redux/reducer";
 
 const Recent = (props: {
     song: Song,
     playlist: Array<Song>
 }) => {
-    const navigation = useNavigation();
+    const dispatch = useDispatch();
 
     return (
         <View>
-            <TouchableOpacity onPress={() => navigation.navigate('PlayerFullScreen', props)}
+            <TouchableOpacity onPress={() => dispatch(chosenSong(props))}
                               style={{
                                   marginRight: 12,
                                   paddingVertical: 12,
-                                  
                               }}>
                 <Image source={{uri: `https://i.ytimg.com/vi/${props.song.id}/hqdefault.jpg`}}
                        style={{
@@ -24,7 +25,7 @@ const Recent = (props: {
                            height: width_screen * .23,
                            borderRadius:5
                        }}/>
-                <Text 
+                <Text
                  numberOfLines={2}
                 style={{
                     width: width_screen * .40,

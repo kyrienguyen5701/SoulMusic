@@ -1,30 +1,30 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
-import {Directions, TouchableOpacity} from 'react-native-gesture-handler';
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {Song} from "components/Song";
 
-const miniPlayer = () => {
+const miniPlayer = (props: Song) => {
   return (
     <View
       style={{
         flexDirection: 'row',
         flex: 1,
       }}>
-      <View  
+      <View
       style={{
         marginTop: 600,
         backgroundColor: '#030239',
         flexDirection: 'row',
         height:70,
         width: '100%',
-        
+
       }}>
         <Image
           style={styles.minImage}
-          source={require('../../assets/maxresdefault.jpg')}
+          source={{uri: `https://i.ytimg.com/vi/${props.id}/hqdefault.jpg`}}
         />
         <Text numberOfLines={2}
         style={styles.title}>
-          TOULIVER x BINZ - "BIGCITYBOI" (Official Music Video)
+          {props.title}
         </Text>
         <TouchableOpacity style={{flex:1}}>
           <Image

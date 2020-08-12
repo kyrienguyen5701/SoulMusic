@@ -8,9 +8,6 @@ import {
   Dimensions,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import SongData from 'components/Song';
-import Recent from 'screens/Playlists/Recent';
-import LinearGradient from 'react-native-linear-gradient';
 
 export const width_screen = Dimensions.get('window').width;
 
