@@ -1,19 +1,12 @@
 import React from 'react';
-import {
-  FlatList,
-  Image,
-  Text,
-  TouchableOpacity,
-  View,
-  Dimensions,
-} from 'react-native';
+import {Text, TouchableOpacity, View, Dimensions} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
 export const width_screen = Dimensions.get('window').width;
 
-const BasicGenres = ['V-Pop', 'K-Pop', 'Pop', 'Blue'];
+const BasicGenres = ['V-Pop', 'K-Pop', 'Pop', 'Rock'];
 
-const Genre = (props) => {
+const Genre = () => {
   const navigation = useNavigation();
   let backgroundColor = '';
 
@@ -22,7 +15,6 @@ const Genre = (props) => {
       style={{
         flexDirection: 'row',
         flexWrap: 'wrap',
-        marginLeft: 70,
         marginTop: 20,
       }}>
       {BasicGenres.map((item, index) => {
@@ -39,7 +31,7 @@ const Genre = (props) => {
           <TouchableOpacity
             key={item}
             style={{
-              width: '35%',
+              width: '42%',
               height: 87,
               marginHorizontal: 10,
               marginVertical: 10,
@@ -48,7 +40,7 @@ const Genre = (props) => {
               alignItems: 'center',
               justifyContent: 'center',
             }}
-            onPress={() => navigation.navigate('Playlist', {item})}>
+            onPress={() => navigation.navigate('Playlist', item)}>
             <Text
               style={{
                 fontSize: 30,

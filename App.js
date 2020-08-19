@@ -11,6 +11,8 @@ import SearchBar from 'screens/Search/components/SearchBar';
 import miniPlayer from 'screens/Player/miniPlayer';
 import {Provider} from 'react-redux';
 import store from 'redux/store';
+import Search from 'screens/Search/index';
+
 enableScreens();
 
 const Tab = createBottomTabNavigator();
@@ -34,25 +36,24 @@ export default function App() {
                 } else if (route.name === 'More') {
                   iconName = 'ellipsis-h';
                 }
-                return <Icon name={iconName} size={size} color={color} />;
+                return <Icon name={iconName} size={30} color={color} />;
               },
             })}
             tabBarOptions={{
-              activeTintColor: 'red',
-              inactiveTintColor: 'gray',
+              activeTintColor: '#C82424',
+              inactiveTintColor: '#0063F8',
               tabStyle: {
                 backgroundColor: '#0C08C3',
-                height: 90,
               },
+              showLabel: false,
             }}
             initialRouteName={'Playlists'}>
-            <Tab.Screen name="miniPlayer" component={miniPlayer} />
-            <Tab.Screen name="DefaultSearch" component={DefaultSearch} />
+            <Tab.Screen name="Search" component={Search} />
             <Tab.Screen name="Playlists" component={Playlists} />
             <Tab.Screen name="More" component={SearchBar} />
           </Tab.Navigator>
         </NavigationContainer>
-        <Player />
+        {/* <Player /> */}
       </Provider>
     </View>
   );
