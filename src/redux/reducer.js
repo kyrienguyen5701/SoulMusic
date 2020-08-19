@@ -15,9 +15,9 @@ export const empty = item => ({
 
 const initialState = {
     chosen: {
-        song: SongData[0], //Song interface
-        playlist: SongData //Array<Song>
-    }
+        song: null, //Song interface
+        playlist: [] //Array<Song>
+    },
 }
 
 const rootReducer = (state = initialState, action) => {
@@ -25,7 +25,7 @@ const rootReducer = (state = initialState, action) => {
         case CHOSEN_SONG:
             return {
                 ...state,
-                chosen: {...action.payload}
+                chosen: action.payload
             }
 
         case EMPTY:

@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
     fontSize:12
   },
   play: {
-    color: '#ffffff',
     width: 25,
     height: 25,
     marginTop:20,

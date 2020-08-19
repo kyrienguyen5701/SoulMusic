@@ -8,20 +8,21 @@ import Player from 'screens/Player';
 import {enableScreens} from 'react-native-screens';
 import {View, Text, TouchableOpacity} from 'react-native';
 import SearchBar from 'screens/Search/components/SearchBar';
-import miniPlayer from 'screens/Player/miniPlayer';
-import {Provider} from 'react-redux';
+import {Provider, useSelector} from 'react-redux';
 import store from 'redux/store';
+import DefaultPlaylists from 'screens/Playlists/DefaultPlaylists';
+
 enableScreens();
-
-
 const Tab = createBottomTabNavigator();
 
 export default function App() {
-  return (
-    <View style={{
-        height: '100%'
-    }}>
-        <Provider store={store}>
+
+    return (
+    <Provider store={store}>
+        <View style={{
+            height: '100%',
+            flex: 1
+        }}>
             <NavigationContainer>
                 <Tab.Navigator
                     screenOptions={({route}) => ({
@@ -46,17 +47,18 @@ export default function App() {
                         },
                     }}
                     initialRouteName={'Playlists'}>
-                    <Tab.Screen name="miniPlayer" component={miniPlayer} />
-                    <Tab.Screen name="DefaultSearch" component={DefaultSearch} />
-                    <Tab.Screen name="Playlists" component={Playlists} />
+                    <Tab.Screen name="Playlists" component={DefaultPlaylists} />
+                    <Tab.Screen name="Search" component={DefaultSearch} />
                     <Tab.Screen name="More" component={SearchBar} />
                 </Tab.Navigator>
             </NavigationContainer>
+            {/*{song != null ? <Player song={song} playlist={playlist}/> : null}*/}
             <Player/>
+        </View>
 
-        </Provider>
 
-    </View>
+    </Provider>
+
 
 
   );

@@ -50,7 +50,7 @@ const Controls = ({
                            }}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={setFavorite} disabled={true}>
+                <TouchableOpacity onPress={setFavorite}>
                     <Image source={require('assets/favorite.png')}
                            style={{
                                tintColor: isFavorite ? 'red' : 'white'
