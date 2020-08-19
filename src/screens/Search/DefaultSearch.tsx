@@ -8,10 +8,12 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-import {TextInput, FlatList} from 'react-native-gesture-handler';
+import {TextInput, FlatList, ScrollView} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import {Song} from 'components/Song';
 import {useNavigation} from '@react-navigation/native';
+import {createConfigItem} from '@babel/core';
+import Genre from './Genre';
 
 export const width_screen = Dimensions.get('window').width;
 
@@ -68,82 +70,100 @@ const DefaultSearch = (props: Song) => {
   const navigation = useNavigation();
   return (
     <LinearGradient colors={['#0C08C4', '#030239', '#000000']}>
-      <View
-        style={{
-          height: '100%',
-        }}>
+      <ScrollView>
         <View
           style={{
-            marginHorizontal: 16,
+            height: '100%',
+            // backgroundColor: 'red',
           }}>
+          <View
+            style={{
+              marginHorizontal: 16,
+            }}>
+            <Text
+              style={{
+                fontSize: 30,
+                marginTop: 41,
+                color: '#FFFFFF',
+              }}>
+              Search
+            </Text>
+          </View>
+          <View
+            style={{
+              marginTop: 28,
+            }}>
+            <TextInput
+              style={styles.input}
+              placeholder={'Search music'}
+              placeholderTextColor="rgba(172, 28, 28, 0.9)"
+            />
+          </View>
+
+          <View
+            style={{
+              marginTop: 20,
+              marginHorizontal: 16,
+            }}>
+            <Text style={styles.trend}>Trending in Vietnam</Text>
+          </View>
+
+          <ImageBackground
+            source={require('assets/Rectangle99.png')}
+            style={styles.container}>
+            <View style={styles.container}>
+              <FlatList
+                keyExtractor={(item, index) => index}
+                data={data}
+                renderItem={({item}) => (
+                  <TouchableOpacity style={{height: 70, borderRadius: 10}}>
+                    <Text key={item.top} style={styles.top}>
+                      #{item.top}
+                    </Text>
+
+                    <Image
+                      key={item.id}
+                      source={{
+                        uri: `https://i.ytimg.com/vi/${item.id}/hqdefault.jpg`,
+                      }}
+                      style={styles.minImage}
+                    />
+                    <View style={styles.component}>
+                      <Text key={item.title} style={styles.title}>
+                        {item.title}
+                      </Text>
+
+                      <Text key={item.channel} style={styles.channel}>
+                        {item.channel}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                )}
+              />
+            </View>
+            <Text
+              style={{
+                color: '#ffffff',
+                textAlign: 'center',
+                fontSize: 12,
+                padding: 13,
+                opacity: 0.7,
+              }}>
+              See all
+            </Text>
+          </ImageBackground>
           <Text
             style={{
+              color: '#ffffff',
               fontSize: 30,
-              marginTop: 41,
-              color: '#FFFFFF',
+              marginTop: 30,
+              marginHorizontal: 16,
             }}>
-            Search
+            Genre
           </Text>
+          <Genre />
         </View>
-        <View
-          style={{
-            marginTop: 28,
-          }}>
-          <TextInput
-            style={styles.input}
-            placeholder={'Search music'}
-            placeholderTextColor="#AC1C1C"
-          />
-        </View>
-
-        <View
-          style={{
-            marginTop: 20,
-            marginHorizontal: 16,
-          }}>
-          <Text style={styles.trend}>Trending in Vietnam</Text>
-        </View>
-
-        <ImageBackground source={require('assets/Rectangle99.png')} style={styles.container}>
-         <View style={styles.container}>
-            <FlatList
-              keyExtractor={(item, index) => index.toString()}
-              data={data}
-              renderItem={({item}) => (
-                <TouchableOpacity style={{height: 70 , borderRadius: 10,}}>
-                  <Text key={item.top} style={styles.top}>
-                    #{item.top}
-                  </Text>
-
-                  <Image
-                    key={item.id}
-                    source={{
-                      uri: `https://i.ytimg.com/vi/${item.id}/hqdefault.jpg`,
-                    }}
-                    style={styles.minImage}
-                  />
-                  <View style={styles.component}>
-                    <Text key={item.title} style={styles.title}>
-                      {item.title}
-                    </Text>
-
-                    <Text key={item.channel} style={styles.channel}>
-                      {item.channel}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              )}
-            />
-            </View>
-          <Text style={{color:'#ffffff' ,
-                         textAlign:'center' ,
-                         fontSize:12,
-                         padding:13,
-                         opacity:0.7
-
-              }}>See all</Text>
-        </ImageBackground>
-      </View>
+      </ScrollView>
     </LinearGradient>
   );
 };
@@ -157,6 +177,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#0C08C3',
     opacity: 0.6,
     borderColor: '#F57A8E',
+    height: 50,
   },
   minImage: {
     width: 65,
@@ -173,8 +194,7 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginRight: 15,
     marginTop: 20,
-    borderRadius:10
-
+    borderRadius: 10,
   },
   top: {
     fontSize: 12,
