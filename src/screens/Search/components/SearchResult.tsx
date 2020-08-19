@@ -13,7 +13,7 @@ import {chosenSong} from "redux/reducer";
     return(
         <View>
             <TouchableOpacity
-                onPress={ () => dispatch(chosenSong(props))}>
+                onPress={() => dispatch(chosenSong(props))}>
                 <View style={{
                     flexDirection:"row",
                     margin:10,

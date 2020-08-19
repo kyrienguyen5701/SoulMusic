@@ -65,7 +65,7 @@ const data = [
   },
 ];
 
-const DefaultSearch = (props: Song) => {
+const DefaultSearch = () => {
   const navigation = useNavigation();
   return (
     <LinearGradient colors={['#0C08C4', '#030239', '#000000']}>
@@ -112,7 +112,7 @@ const DefaultSearch = (props: Song) => {
             style={styles.container}>
             <View style={styles.container}>
               <FlatList
-                keyExtractor={(item, index) => index}
+                keyExtractor={(item, index) => index.toString()}
                 data={data}
                 renderItem={({item}) => (
                   <TouchableOpacity style={{height: 70, borderRadius: 10}}>
