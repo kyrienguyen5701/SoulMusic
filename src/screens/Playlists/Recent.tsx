@@ -11,7 +11,6 @@ const Recent = (props: {
     playlist: Array<Song>
 }) => {
     const dispatch = useDispatch();
-
     return (
         <View>
             <TouchableOpacity onPress={() => dispatch(chosenSong(props))}
