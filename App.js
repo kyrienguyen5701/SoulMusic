@@ -6,7 +6,6 @@ import DefaultSearch from 'screens/Search/DefaultSearch';
 import Player from 'screens/Player';
 import {enableScreens} from 'react-native-screens';
 import {View} from 'react-native';
-import SearchBar from 'screens/Search/components/SearchBar';
 import {Provider} from 'react-redux';
 import store from 'redux/store';
 import DefaultPlaylists from 'screens/Playlists/DefaultPlaylists';
