@@ -6,7 +6,6 @@ import DefaultSearch from 'screens/Search/DefaultSearch';
 import Player from 'screens/Player';
 import {enableScreens} from 'react-native-screens';
 import {View} from 'react-native';
-import SearchBar from 'screens/Search/components/SearchBar';
 import {Provider} from 'react-redux';
 import store from 'redux/store';
 import DefaultPlaylists from 'screens/Playlists/DefaultPlaylists';
@@ -26,13 +25,15 @@ export default function App() {
             screenOptions={({route}) => ({
               tabBarIcon: ({focused, color, size}) => {
                 let iconName;
-                if (route.name === 'Playlists') {
+                if (route.name === 'DefaultPlaylists') {
                   iconName = 'music';
-                } else if (route.name === 'Search') {
-                  iconName = 'search';
-                } else if (route.name === 'More') {
-                  iconName = 'ellipsis-h';
                 }
+                else if (route.name === 'DefaultSearch') {
+                  iconName = 'search';
+                }
+                // else if (route.name === 'More') {
+                //   iconName = 'ellipsis-h';
+                // }
                 return <Icon name={iconName} size={size} color={color} />;
               },
             })}
@@ -47,7 +48,7 @@ export default function App() {
             initialRouteName={'DefaultPlaylists'}>
             <Tab.Screen name="DefaultSearch" component={DefaultSearch} />
             <Tab.Screen name="DefaultPlaylists" component={DefaultPlaylists} />
-            <Tab.Screen name="More" component={SearchBar} />
+            {/*<Tab.Screen name="More" component={SearchBar} />*/}
           </Tab.Navigator>
         </NavigationContainer>
         <Player />

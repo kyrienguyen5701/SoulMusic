@@ -6,6 +6,10 @@ import LinearGradient from 'react-native-linear-gradient';
 import Controls from 'screens/Player/components/Controls';
 import {useDispatch, useSelector} from 'react-redux';
 import {createFavorite, deleteFavorite, getFavorites} from 'components/Data';
+import Pause from 'screens/Player/components/Pause';
+import Discard from 'screens/Player/components/Discard';
+import Next from 'screens/Player/components/Next';
+import Disk from 'screens/Player/components/Disk';
 
 // try to use dispatch to update the state of the chosen song in redux
 // fix on y position
@@ -17,7 +21,7 @@ const Player = () => {
     const [state, setState] = useState({
         isLoading: false,
         paused: false,
-        isLooping: false,
+        isLoop: false,
         isShuffle: false,
         isFavorite: false,
         visible: false,
@@ -29,7 +33,7 @@ const Player = () => {
         selectedSong: 0,
         error: null,
     });
-    const y = useRef(new Animated.Value(-500)).current;
+    const y = useRef(new Animated.Value(-400)).current;
 
     // initialize the playedSongs and pendingSongs when a song is clicked
     useEffect(() => {
@@ -104,10 +108,10 @@ const Player = () => {
             setState(prevState => {
                 return {
                     ...prevState,
-                    isLooping: !prevState.isLooping
+                    isLoop: !prevState.isLoop
                 }
             })
-        }, [state.isLooping]
+        }, [state.isLoop]
     )
 
     const seek = (time) => {
@@ -205,6 +209,8 @@ const Player = () => {
         }, [state.playedSongs[state.selectedSong], state.selectedSong,state.indexAtSource]
     );
 
+    const forwardDisabled = state.selectedSong === playlist.length - 1;
+
     const pause = useCallback(
         () => {
             setState(prevState => {
@@ -214,6 +220,16 @@ const Player = () => {
                 }
             })
         }, [state.paused]
+    )
+
+    const discard = useCallback(
+        () => {
+            setState(prevState => {
+                return {
+                    ...prevState
+                }
+            })
+        }, []
     )
 
     const slideUp = useCallback(
@@ -257,40 +273,30 @@ const Player = () => {
                         top: -600,
                         backgroundColor: '#030239',
                         flexDirection: 'row',
-                        height:300,
+                        height: 150,
                         width: '100%',
                     }}>
-                        <Image
-                            style={{
-                                height: 50,
-                                marginLeft: 10,
-                                width:75,
-                                marginTop: 9,
-                            }}
-                            source={{uri: `https://i.ytimg.com/vi/${state.playedSongs[state.selectedSong].id}/hqdefault.jpg`}}
+                        <Disk
+                            uri={`https://i.ytimg.com/vi/${state.playedSongs[state.selectedSong].id}/hqdefault.jpg`}
                         />
                         <Text numberOfLines={2}
-                            // style={styles.title}
+                            style={{
+                                lineHeight: 15,
+                                color: '#ffffff',
+                                marginLeft: -5,
+                                width: 200,
+                                padding: 20,
+                                height:70,
+                                fontSize:12
+                            }}
                         >
                             {state.playedSongs[state.selectedSong].title}
                         </Text>
-                        <TouchableOpacity style={{flex:1}}>
-                            <Image
-                                style={{
-                                    width: 25,
-                                    height: 25,
-                                    marginTop:20,
-                                    marginLeft:-5
-                                }}
-                                source={require('assets/play-button.png')}
-                            />
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{flex:1}}>
-                            <Image
-                                // style={styles.close}
-                                source={require('assets/x.png')}
-                            />
-                        </TouchableOpacity>
+                        <Pause pause={pause} paused={state.paused} height={30} width={30}/>
+                        {state.paused
+                            ? <Discard discard={discard} style={{flex: 1}} />
+                            : <Next forward={forward} forwardDisabled={forwardDisabled} />
+                        }
                     </TouchableOpacity>
                     <Animated.View style={{
                         position: 'absolute',
@@ -322,7 +328,6 @@ const Player = () => {
                                     <TouchableOpacity>
                                         <Image source={require('assets/timer.png')} />
                                     </TouchableOpacity>
-
                                 </View>
                                 <Text style={{
                                     color:"#ffffff",
@@ -341,11 +346,11 @@ const Player = () => {
                                         playInBackground={true}
                                         resizeMode={'contain'}
                                         paused={state.paused}
-                                        repeat={state.isLooping}
+                                        repeat={state.isLoop}
                                         onLoadStart={onLoadStart}
                                         onLoad={getInfo}
                                         onEnd={
-                                            !state.isLooping &&
+                                            !state.isLoop &&
                                             state.indexAtSource === playlist.length - 1 ? pause : forward
                                         }
                                         onProgress={setTime}
@@ -368,8 +373,8 @@ const Player = () => {
                                         pause={pause}
                                         back={back}
                                         forward={forward}
-                                        forwardDisabled={state.selectedSong === playlist.length - 1}
-                                        isLooping={state.isLooping}
+                                        forwardDisabled={forwardDisabled}
+                                        isLoop={state.isLoop}
                                         setLoop={setLoop}
                                         isShuffle={state.isShuffle}
                                         setShuffle={setShuffle}
