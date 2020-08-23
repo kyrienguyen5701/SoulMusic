@@ -12,7 +12,6 @@ import {TextInput, FlatList, ScrollView} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import {Song} from 'components/Song';
 import {useNavigation} from '@react-navigation/native';
-import {createConfigItem} from '@babel/core';
 import Genre from './Genre';
 import SearchBar from '../Search/components/SearchBar';
 
@@ -129,7 +128,7 @@ const DefaultSearch = (props: Song) => {
             style={styles.container}>
             <View style={styles.container}>
               <FlatList
-                keyExtractor={(item, index) => index}
+                keyExtractor={(item, index) => index.toString()}
                 data={data}
                 renderItem={({item}) => (
                   <TouchableOpacity style={{height: 70, borderRadius: 10}}>
@@ -196,7 +195,7 @@ const styles = StyleSheet.create({
     height: 50,
   },
   minImage: {
-    width: 70,
+    width: 80,
     height: 50,
     marginLeft: ((width_screen - 30) % 2) + 45,
     marginTop: 15,
@@ -213,16 +212,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   top: {
-    fontSize: 12,
+    fontSize: 14,
     position: 'absolute',
     marginTop: 29,
-    marginLeft: ((width_screen - 30) % 2) + 15,
+    marginLeft: ((width_screen - 30) % 2) + 9,
     color: '#FFFFFF',
   },
   component: {
     width: '60%',
     height: 76,
-    marginLeft: 135,
+    marginLeft: 145,
     marginTop: 15,
     position: 'absolute',
   },
@@ -230,13 +229,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     lineHeight: 15,
     color: '#FFFFFF',
-    fontSize: 12,
+    fontSize: 14,
     marginLeft: ((width_screen - 30) % 2) - 8,
   },
   channel: {
-    marginTop: 30,
+    marginVertical: 33,
     color: '#D87777',
-    fontSize: 10,
+    fontSize: 11.5,
     marginLeft: ((width_screen - 30) % 2) - 8,
   },
 });

@@ -2,12 +2,15 @@ import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {Dimensions, Image, TouchableOpacity, View, Text} from 'react-native';
 import {Song} from 'components/Song';
+import {useDispatch} from 'react-redux';
+import {chosenSong} from 'redux/reducer';
+
 // @ts-ignore
-const SearchResult = (props) => {
-  const navigation = useNavigation();
+const SearchResult = (props: {song: Song; playlist: Array<Song>}) => {
+  const dispatch = useDispatch();
   return (
     <View>
-      <TouchableOpacity onPress={() => navigation.navigate('Player', props)}>
+      <TouchableOpacity onPress={() => dispatch(chosenSong(props))}>
         <View
           style={{
             flexDirection: 'row',

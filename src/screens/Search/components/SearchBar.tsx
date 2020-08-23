@@ -79,16 +79,20 @@ const SearchBar = () => {
                 autoFocus={true}
               />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity
+              style={{
+                width: 60,
+                height: 50,
+                marginHorizontal: 10,
+                justifyContent: 'center',
+                paddingHorizontal: 10,
+              }}
+              onPress={() => navigation.goBack()}>
               <Text
                 style={{
-                  marginHorizontal: 10,
                   fontSize: 20,
-                  justifyContent: 'center',
                   color: 'white',
                   textAlignVertical: 'center',
-                  marginTop: 10,
-                  paddingHorizontal: 10,
                 }}>
                 Hủy
               </Text>

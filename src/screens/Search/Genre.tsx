@@ -43,11 +43,12 @@ const Genre = () => {
             onPress={() => navigation.navigate('Playlist', item)}>
             <Text
               style={{
-                fontSize: 30,
+                fontSize: 28,
                 fontFamily: 'Monoton-Regular',
                 textShadowColor: 'rgba(0,0,0,0.25)',
                 textShadowOffset: {width: 1, height: 4},
                 textShadowRadius: 5,
+                textTransform: 'uppercase',
               }}>
               {item}
             </Text>

@@ -4,6 +4,7 @@ import {View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import SearchBar from './components/SearchBar';
+import Playlist from 'screens/Playlists/Playlist';
 
 const Stack = createStackNavigator();
 
@@ -20,6 +21,13 @@ const Search = () => {
       <Stack.Screen
         name="SearchBar"
         component={SearchBar}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Playlist"
+        component={Playlist}
         options={{
           headerShown: false,
         }}
