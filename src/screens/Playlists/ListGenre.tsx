@@ -6,7 +6,7 @@ import {width_screen} from 'screens/Playlists/DefaultPlaylists';
 import {useDispatch} from 'react-redux';
 import {chosenSong} from 'redux/reducer';
 
-const Recent = (props: {song: Song; playlist: Array<Song>}) => {
+const ListGenre = (props: {song: Song; playlist: Array<Song>}) => {
   const dispatch = useDispatch();
 
   return (
@@ -16,31 +16,38 @@ const Recent = (props: {song: Song; playlist: Array<Song>}) => {
         style={{
           marginRight: 12,
           paddingVertical: 12,
+          flexDirection: 'row',
         }}>
         <Image
           source={{
             uri: `https://i.ytimg.com/vi/${props.song.id}/hqdefault.jpg`,
           }}
           style={{
-            width: width_screen * 0.4,
-            height: width_screen * 0.23,
+            width: width_screen * 0.3,
+            height: width_screen * 0.2,
             borderRadius: 5,
           }}
         />
-        <Text
-          numberOfLines={2}
-          style={{
-            width: width_screen * 0.4,
-            fontSize: 14,
-            color: '#D87777',
-            marginTop: 6,
-            opacity: 0.8,
-          }}>
-          {props.song.title}
-        </Text>
+        <View
+          style={{flexDirection: 'column', marginLeft: 15, marginVertical: 10}}>
+          <Text
+            numberOfLines={2}
+            style={{
+              width: width_screen * 0.6,
+              fontSize: 16,
+              color: '#FFFFFF',
+              marginTop: 6,
+              opacity: 0.8,
+            }}>
+            {props.song.title}
+          </Text>
+          <Text style={{color: '#D87777', marginVertical: 5}}>
+            {props.song.chanel}
+          </Text>
+        </View>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default Recent;
+export default ListGenre;

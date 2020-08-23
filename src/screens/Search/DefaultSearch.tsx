@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {
   Text,
   View,
@@ -13,6 +13,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {Song} from 'components/Song';
 import {useNavigation} from '@react-navigation/native';
 import Genre from './Genre';
+import SearchBar from '../Search/components/SearchBar';
 
 export const width_screen = Dimensions.get('window').width;
 
@@ -65,15 +66,18 @@ const data = [
   },
 ];
 
-const DefaultSearch = () => {
+const DefaultSearch = (props: Song) => {
   const navigation = useNavigation();
+  const onGoSearchBar = useCallback(() => {
+    props.navigation.navigate('SearchBar');
+  }, []);
+
   return (
     <LinearGradient colors={['#0C08C4', '#030239', '#000000']}>
       <ScrollView>
         <View
           style={{
             height: '100%',
-            // backgroundColor: 'red',
           }}>
           <View
             style={{
@@ -88,17 +92,30 @@ const DefaultSearch = () => {
               Search
             </Text>
           </View>
-          <View
-            style={{
-              marginTop: 28,
-            }}>
-            <TextInput
-              style={styles.input}
-              placeholder={'Search music'}
-              placeholderTextColor="rgba(172, 28, 28, 0.9)"
-            />
-          </View>
 
+          <TouchableOpacity onPress={onGoSearchBar}>
+            <View
+              style={{
+                marginTop: 28,
+              }}>
+              <Text
+                style={{
+                  borderWidth: 1,
+                  marginLeft: 15,
+                  marginRight: 15,
+                  borderRadius: 10,
+                  backgroundColor: '#0C08C3',
+                  opacity: 0.6,
+                  borderColor: '#F57A8E',
+                  height: 50,
+                  fontSize: 18,
+                  color: '#8D5555',
+                  textAlignVertical: 'center',
+                }}>
+                Search music
+              </Text>
+            </View>
+          </TouchableOpacity>
           <View
             style={{
               marginTop: 20,
@@ -106,7 +123,6 @@ const DefaultSearch = () => {
             }}>
             <Text style={styles.trend}>Trending in Vietnam</Text>
           </View>
-
           <ImageBackground
             source={require('assets/Rectangle99.png')}
             style={styles.container}>
@@ -179,8 +195,8 @@ const styles = StyleSheet.create({
     height: 50,
   },
   minImage: {
-    width: 65,
-    height: 45,
+    width: 80,
+    height: 50,
     marginLeft: ((width_screen - 30) % 2) + 45,
     marginTop: 15,
     borderRadius: 5,
@@ -196,16 +212,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   top: {
-    fontSize: 12,
+    fontSize: 14,
     position: 'absolute',
     marginTop: 29,
-    marginLeft: ((width_screen - 30) % 2) + 15,
+    marginLeft: ((width_screen - 30) % 2) + 9,
     color: '#FFFFFF',
   },
   component: {
     width: '60%',
     height: 76,
-    marginLeft: 135,
+    marginLeft: 145,
     marginTop: 15,
     position: 'absolute',
   },
@@ -213,13 +229,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     lineHeight: 15,
     color: '#FFFFFF',
-    fontSize: 10,
+    fontSize: 14,
     marginLeft: ((width_screen - 30) % 2) - 8,
   },
   channel: {
-    marginTop: 30,
+    marginVertical: 33,
     color: '#D87777',
-    fontSize: 9,
+    fontSize: 11.5,
     marginLeft: ((width_screen - 30) % 2) - 8,
   },
 });
