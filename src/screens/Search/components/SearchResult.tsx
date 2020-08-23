@@ -4,6 +4,7 @@ import {Dimensions, Image, TouchableOpacity, View, Text} from "react-native";
 import {Song} from "components/Song";
 import {useDispatch} from "react-redux";
 import {chosenSong} from "redux/reducer";
+import {createRecent} from "components/Data";
 
  const SearchResult = (props: {
      song: Song,
@@ -13,7 +14,10 @@ import {chosenSong} from "redux/reducer";
     return(
         <View>
             <TouchableOpacity
-                onPress={() => dispatch(chosenSong(props))}>
+                onPress={() => {
+                    dispatch(chosenSong(props));
+                    // createRecent(props.song);
+                }}>
                 <View style={{
                     flexDirection:"row",
                     margin:10,

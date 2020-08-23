@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {TouchableOpacity, View, Text, Image, Animated} from 'react-native';
 import Video from "react-native-video";
 import SeekBar from 'screens/Player/components/SeekBar';
@@ -10,12 +10,14 @@ import Pause from 'screens/Player/components/Pause';
 import Discard from 'screens/Player/components/Discard';
 import Next from 'screens/Player/components/Next';
 import Disk from 'screens/Player/components/Disk';
+import {chosenSong} from 'redux/reducer';
+import {height_screen, width_screen} from 'components/Device';
 
 // try to use dispatch to update the state of the chosen song in redux
 // fix on y position
 
 const Player = () => {
-    const {song, playlist} = useSelector(state => state.chosen)
+    const {song, playlist} = useSelector(state => state.chosen);
     let audioElement = useRef(null);
     const dispatch = useDispatch();
     const [state, setState] = useState({
@@ -33,7 +35,8 @@ const Player = () => {
         selectedSong: 0,
         error: null,
     });
-    const y = useRef(new Animated.Value(-400)).current;
+    const x = useRef(new Animated.Value(0)).current
+    const y = useRef(new Animated.Value(0)).current;
 
     // initialize the playedSongs and pendingSongs when a song is clicked
     useEffect(() => {
@@ -209,7 +212,8 @@ const Player = () => {
         }, [state.playedSongs[state.selectedSong], state.selectedSong,state.indexAtSource]
     );
 
-    const forwardDisabled = state.selectedSong === playlist.length - 1;
+    const forwardDisabled = useMemo(
+        () => state.selectedSong === playlist.length - 1,[state.selectedSong]);
 
     const pause = useCallback(
         () => {
@@ -224,9 +228,14 @@ const Player = () => {
 
     const discard = useCallback(
         () => {
+            Animated.spring(x, {
+                toValue: -width_screen,
+                duration: 2000,
+                useNativeDriver: true
+            }).start();
             setState(prevState => {
                 return {
-                    ...prevState
+                    ...state
                 }
             })
         }, []
@@ -235,7 +244,7 @@ const Player = () => {
     const slideUp = useCallback(
         () => {
             Animated.spring(y, {
-                toValue: -700,
+                toValue: -height_screen + 30,
                 duration: 2000,
                 useNativeDriver: true
             }).start();
@@ -251,7 +260,7 @@ const Player = () => {
     const slideDown = useCallback(
         () => {
             Animated.spring(y, {
-                toValue: -500,
+                toValue: 0,
                 duration: 2000,
                 useNativeDriver: true
             }).start();
@@ -270,7 +279,12 @@ const Player = () => {
                 <View>
                     <TouchableOpacity onPress={slideUp} style={{
                         position: 'absolute',
-                        top: -600,
+                        top: -width_screen / 2,
+                        transform: [
+                            {
+                                translateX: x
+                            }
+                        ],
                         backgroundColor: '#030239',
                         flexDirection: 'row',
                         height: 150,
@@ -279,7 +293,8 @@ const Player = () => {
                         <Disk
                             uri={`https://i.ytimg.com/vi/${state.playedSongs[state.selectedSong].id}/hqdefault.jpg`}
                         />
-                        <Text numberOfLines={2}
+                        <Text
+                            numberOfLines={2}
                             style={{
                                 lineHeight: 15,
                                 color: '#ffffff',
@@ -300,6 +315,7 @@ const Player = () => {
                     </TouchableOpacity>
                     <Animated.View style={{
                         position: 'absolute',
+                        height: height_screen,
                         transform: [
                             {
                                 translateY: y
