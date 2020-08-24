@@ -5,7 +5,7 @@ const Next = ({forward, forwardDisabled}) => {
   return (
     <TouchableOpacity onPress={forward} disabled={forwardDisabled}>
       <Image
-        style={{width: 24, height: 24, marginLeft: 20}}
+        style={{width: 30, height: 30, marginLeft: 20}}
         source={require('assets/next.png')}
       />
     </TouchableOpacity>

@@ -27,14 +27,15 @@ const Disk = ({
       source={{uri: uri}}
       style={{
         width: 70,
+        height: 70,
         borderRadius: radius,
         resizeMode: 'cover',
-
         transform: [
           {
             rotate: spin,
           },
         ],
+        marginTop: 5,
       }}
     />
   );

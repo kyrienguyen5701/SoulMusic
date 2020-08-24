@@ -25,6 +25,7 @@ const Recent = (props: {
         // onLongPress={() => deleteRecent(props.song)}
         style={{
           marginRight: 12,
+          paddingVertical: 12,
         }}>
         <Image
           source={{
