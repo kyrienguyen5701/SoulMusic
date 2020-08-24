@@ -2,9 +2,9 @@ import React from 'react';
 import {Song} from 'components/Song';
 import {useNavigation} from '@react-navigation/native';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
-import {width_screen} from 'screens/Playlists/DefaultPlaylists';
 import {useDispatch} from 'react-redux';
 import {chosenSong} from 'redux/reducer';
+import {width_screen} from 'components/Device';
 
 const ListGenre = (props: {song: Song; playlist: Array<Song>}) => {
   const dispatch = useDispatch();
@@ -15,7 +15,7 @@ const ListGenre = (props: {song: Song; playlist: Array<Song>}) => {
         onPress={() => dispatch(chosenSong(props))}
         style={{
           marginRight: 12,
-          paddingVertical: 12,
+          marginHorizontal: 12,
           flexDirection: 'row',
         }}>
         <Image
@@ -29,19 +29,22 @@ const ListGenre = (props: {song: Song; playlist: Array<Song>}) => {
           }}
         />
         <View
-          style={{flexDirection: 'column', marginLeft: 15, marginVertical: 10}}>
+          style={{
+            flexDirection: 'column',
+            marginLeft: 15,
+            marginBottom: 20,
+          }}>
           <Text
             numberOfLines={2}
             style={{
               width: width_screen * 0.6,
               fontSize: 16,
               color: '#FFFFFF',
-              marginTop: 6,
               opacity: 0.8,
             }}>
             {props.song.title}
           </Text>
-          <Text style={{color: '#D87777', marginVertical: 5}}>
+          <Text style={{color: '#D87777', marginVertical: 5, fontSize: 12}}>
             {props.song.chanel}
           </Text>
         </View>
