@@ -1,18 +1,21 @@
 import React from 'react';
 import {Song} from 'components/Song';
-import {useNavigation} from '@react-navigation/native';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
-import {width_screen} from 'screens/Playlists/DefaultPlaylists';
 import {useDispatch} from 'react-redux';
 import {chosenSong} from 'redux/reducer';
+import {createRecent, deleteRecent} from 'components/Data';
+import {width_screen} from 'components/Device';
 
 const Recent = (props: {song: Song; playlist: Array<Song>}) => {
   const dispatch = useDispatch();
-
   return (
     <View>
       <TouchableOpacity
-        onPress={() => dispatch(chosenSong(props))}
+        onPress={() => {
+          dispatch(chosenSong(props));
+          createRecent(props.song);
+        }}
+        // onLongPress={() => deleteRecent(props.song)}
         style={{
           marginRight: 12,
           paddingVertical: 12,
@@ -31,7 +34,7 @@ const Recent = (props: {song: Song; playlist: Array<Song>}) => {
           numberOfLines={2}
           style={{
             width: width_screen * 0.4,
-            fontSize: 14,
+            fontSize: 13,
             color: '#D87777',
             marginTop: 6,
             opacity: 0.8,

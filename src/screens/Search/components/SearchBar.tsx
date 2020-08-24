@@ -33,7 +33,11 @@ const SearchBar = () => {
         })
         .then((res) => {
           setResults(
-            res.filter((song: Song) => findSubstring(song.title, value)),
+            res.filter(
+              (song: Song) =>
+                findSubstring(song.title, value) ||
+                findSubstring(song.chanel, value),
+            ),
           );
           setSource(res);
         })
@@ -41,6 +45,8 @@ const SearchBar = () => {
         .finally(() => {
           setLoading(false);
         });
+    } else {
+      setResults([]);
     }
   };
   const navigation = useNavigation();
@@ -64,7 +70,7 @@ const SearchBar = () => {
                 style={{
                   fontSize: 18,
                   backgroundColor: '#0C08C3',
-                  color: '#8D5555',
+
                   marginHorizontal: 10,
                   borderRadius: 10,
                   width: width_screen * 0.78,
@@ -90,28 +96,40 @@ const SearchBar = () => {
               onPress={() => navigation.goBack()}>
               <Text
                 style={{
-                  fontSize: 20,
+                  fontSize: 13,
                   color: 'white',
                   textAlignVertical: 'center',
                 }}>
-                Hủy
+                Cancel
               </Text>
             </TouchableOpacity>
           </View>
           {loading ? (
             <ActivityIndicator
-              style={{marginTop: 10}}
+              style={{marginTop: 100}}
               size="large"
-              color="red"
+              color="white"
             />
           ) : null}
-          <FlatList
-            keyExtractor={(item, index) => index.toString()}
-            data={results}
-            renderItem={({item}) => {
-              return <SearchResult song={item} playlist={source} />;
-            }}
-          />
+          {results.length === 0 ? (
+            <Text
+              style={{
+                marginTop: 80,
+                textAlign: 'center',
+                color: '#D87777',
+              }}>
+              No Results
+            </Text>
+          ) : (
+            <FlatList
+              style={{marginTop: 100}}
+              keyExtractor={(item, index) => index.toString()}
+              data={results}
+              renderItem={({item}) => {
+                return <SearchResult song={item} playlist={source} />;
+              }}
+            />
+          )}
         </View>
       </View>
     </LinearGradient>

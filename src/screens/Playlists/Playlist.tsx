@@ -65,22 +65,19 @@ const Playlist = ({navigation, route}) => {
             }}>
             <TouchableOpacity
               style={{
-                marginVertical: 25,
+                marginVertical: 20,
                 height: 30,
-                width: '10%',
+                width: '20%',
               }}
               onPress={() => navigation.goBack()}>
-              <Image
-                style={{marginLeft: 20}}
-                source={require('assets/back.png')}
-              />
+              <Image style={{}} source={require('assets/back.png')} />
             </TouchableOpacity>
             <Text
               style={{
                 fontSize: 30,
-                marginVertical: 20,
+                marginTop: 7,
                 textAlign: 'center',
-                width: '80%',
+                width: '60%',
                 color: '#FFFFFF',
               }}>
               {genre}
@@ -97,7 +94,7 @@ const Playlist = ({navigation, route}) => {
           </Text>
         </View>
         <ShuffleButton title="Shuffle Play" />
-        <View style={{marginTop: 20, marginHorizontal: 16, marginVertical: 20}}>
+        <View style={{marginTop: 20, marginVertical: 20}}>
           <FlatList
             data={data}
             showsVerticalScrollIndicator={false}

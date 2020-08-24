@@ -144,7 +144,10 @@ const DefaultSearch = (props: Song) => {
                       style={styles.minImage}
                     />
                     <View style={styles.component}>
-                      <Text key={item.title} style={styles.title}>
+                      <Text
+                        numberOfLines={2}
+                        key={item.title}
+                        style={styles.title}>
                         {item.title}
                       </Text>
 

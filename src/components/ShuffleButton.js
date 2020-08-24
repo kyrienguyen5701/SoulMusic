@@ -5,9 +5,8 @@ const ShuffleButton = ({title}) => {
   return (
     <View
       style={{
-        marginTop: 20,
-        marginHorizontal: '32%',
-        width: 170,
+        marginTop: 2,
+        paddingLeft: '26%',
       }}>
       <TouchableOpacity
         style={{
@@ -21,7 +20,7 @@ const ShuffleButton = ({title}) => {
           style={{
             textAlign: 'center',
             color: '#ffffff',
-            fontSize: 17,
+            fontSize: 16,
           }}>
           {title}
         </Text>

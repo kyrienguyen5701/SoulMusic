@@ -18,7 +18,7 @@ const RecentSchema = {
     name: 'Recent',
     properties: {
         id: 'string',
-        // title: 'string',
+        title: 'string',
         // channel: 'string',
         // genre: 'string',
         // url: 'any'
@@ -72,7 +72,7 @@ const createRecent = (song: Song) => {
                 if (recents.length === MAX_RECENT) {
                     realm.delete(recents[0]);
                 }
-                const recent = realm.create('Recent', {id: song.id});
+                const recent = realm.create('Recent', {id: song.id, title: song.title});
             });
             realm.close();
         })
