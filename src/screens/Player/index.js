@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {TouchableOpacity, View, Text, Image, Animated} from 'react-native';
 import Video from "react-native-video";
 import SeekBar from 'screens/Player/components/SeekBar';
@@ -10,17 +10,16 @@ import Pause from 'screens/Player/components/Pause';
 import Discard from 'screens/Player/components/Discard';
 import Next from 'screens/Player/components/Next';
 import Disk from 'screens/Player/components/Disk';
-
-// try to use dispatch to update the state of the chosen song in redux
-// fix on y position
+import {chosenSong, empty} from 'redux/reducer';
+import {height_screen, width_screen} from 'components/Device';
 
 const Player = () => {
-    const {song, playlist} = useSelector(state => state.chosen)
+    const {song, playlist} = useSelector(state => state.chosen);
     let audioElement = useRef(null);
     const dispatch = useDispatch();
     const [state, setState] = useState({
         isLoading: false,
-        paused: false,
+        paused: false, // default false, true for debugging
         isLoop: false,
         isShuffle: false,
         isFavorite: false,
@@ -33,12 +32,12 @@ const Player = () => {
         selectedSong: 0,
         error: null,
     });
-    const y = useRef(new Animated.Value(-400)).current;
+    const x = useRef(new Animated.Value(0)).current
+    const y = useRef(new Animated.Value(0)).current;
 
     // initialize the playedSongs and pendingSongs when a song is clicked
     useEffect(() => {
         setState(prevState => {
-            // console.log(playlist);
             return {
                 ...prevState,
                 indexAtSource: playlist.findIndex((element) => element.id === song.id),
@@ -75,7 +74,6 @@ const Player = () => {
         (data) => {
             let getFavorite;
             getFavorites((source) => {
-                console.log(source);
                 if (source.findIndex((element) => element.id === state.playedSongs[state.selectedSong].id) === -1) {
                     getFavorite = false;
                 }
@@ -129,10 +127,10 @@ const Player = () => {
     const setFavorite = useCallback(
         () => {
             if (state.isFavorite) {
-                deleteFavorite(state.playedSongs[state.selectedSong])
+                deleteFavorite(song)
             }
             else {
-                createFavorite(state.playedSongs[state.selectedSong])
+                createFavorite(song)
             }
             setState(prevState => {
                 return {
@@ -140,7 +138,7 @@ const Player = () => {
                     isFavorite: !prevState.isFavorite
                 }
             })
-        }, [state.playedSongs[state.selectedSong], state.isFavorite]
+        }, [song, state.isFavorite]
     )
 
     const setShuffle = useCallback(
@@ -166,7 +164,10 @@ const Player = () => {
                         selectedSong: prevState.selectedSong - 1
                     }
                 }), 0);
-                // dispatch(chosenSong(state.playedSongs[state.selectedSong], playlist));
+                dispatch(chosenSong({
+                    song: state.playedSongs[state.selectedSong],
+                    playlist: playlist
+                }));
             } else {
                 audioElement.seek(0);
                 setState(prevState => {
@@ -176,7 +177,7 @@ const Player = () => {
                     }
                 });
             }
-        }, [state.playedSongs[state.selectedSong], state.selectedSong]
+        }, [song, state.selectedSong]
     );
 
     const forward = useCallback(
@@ -190,26 +191,31 @@ const Player = () => {
                         if (prevState.isShuffle) {
                             let next = parseInt(Math.random() * prevState.pendingSongs.length);
                             indexAtSource = playlist.findIndex((element) => element.id === prevState.pendingSongs[next].id)
-                            console.log(indexAtSource);
                         }
                     }
                     const toBeNext = playlist[indexAtSource];
+
                     return {
                         ...prevState,
                         currentTime: 0,
-                        paused: false,
+                        paused: false, // supposed to be false
                         indexAtSource: indexAtSource,
                         playedSongs: prevState.playedSongs.concat([toBeNext]),
                         pendingSongs: prevState.pendingSongs.filter((element) => element.id !== toBeNext.id),
                         selectedSong: prevState.selectedSong + 1
                     }
+                    // console.log("Betch", useSelector(state => state.chosen).song);
                 }), 0);
-                // dispatch(chosenSong(state.playedSongs[state.selectedSong], playlist));
+                dispatch(chosenSong({
+                    song: state.playedSongs[state.selectedSong],
+                    playlist: playlist
+                }));
             }
-        }, [state.playedSongs[state.selectedSong], state.selectedSong,state.indexAtSource]
+        }, [song, state.selectedSong, state.indexAtSource]
     );
 
-    const forwardDisabled = state.selectedSong === playlist.length - 1;
+    const forwardDisabled = useMemo(
+        () => state.selectedSong === playlist.length - 1,[state.selectedSong]);
 
     const pause = useCallback(
         () => {
@@ -224,18 +230,24 @@ const Player = () => {
 
     const discard = useCallback(
         () => {
+            Animated.spring(x, {
+                toValue: -width_screen,
+                duration: 2000,
+                useNativeDriver: true
+            }).start();
             setState(prevState => {
                 return {
-                    ...prevState
+                    ...state
                 }
-            })
+            });
+            dispatch(empty());
         }, []
     )
 
     const slideUp = useCallback(
         () => {
             Animated.spring(y, {
-                toValue: -700,
+                toValue: -height_screen + 30,
                 duration: 2000,
                 useNativeDriver: true
             }).start();
@@ -251,7 +263,7 @@ const Player = () => {
     const slideDown = useCallback(
         () => {
             Animated.spring(y, {
-                toValue: -500,
+                toValue: 0,
                 duration: 2000,
                 useNativeDriver: true
             }).start();
@@ -270,16 +282,22 @@ const Player = () => {
                 <View>
                     <TouchableOpacity onPress={slideUp} style={{
                         position: 'absolute',
-                        top: -600,
+                        top: -width_screen / 2,
+                        transform: [
+                            {
+                                translateX: x
+                            }
+                        ],
                         backgroundColor: '#030239',
                         flexDirection: 'row',
                         height: 150,
                         width: '100%',
                     }}>
                         <Disk
-                            uri={`https://i.ytimg.com/vi/${state.playedSongs[state.selectedSong].id}/hqdefault.jpg`}
+                            uri={`https://i.ytimg.com/vi/${song.id}/hqdefault.jpg`}
                         />
-                        <Text numberOfLines={2}
+                        <Text
+                            numberOfLines={2}
                             style={{
                                 lineHeight: 15,
                                 color: '#ffffff',
@@ -290,7 +308,7 @@ const Player = () => {
                                 fontSize:12
                             }}
                         >
-                            {state.playedSongs[state.selectedSong].title}
+                            {song.title}
                         </Text>
                         <Pause pause={pause} paused={state.paused} height={30} width={30}/>
                         {state.paused
@@ -300,6 +318,7 @@ const Player = () => {
                     </TouchableOpacity>
                     <Animated.View style={{
                         position: 'absolute',
+                        height: height_screen,
                         transform: [
                             {
                                 translateY: y
@@ -310,7 +329,6 @@ const Player = () => {
                             <View style={{
                                 height: '100%',
                             }}>
-
                                 <View style={{
                                     display: 'flex',
                                     flexDirection: 'row'
@@ -324,7 +342,7 @@ const Player = () => {
                                         textAlign: 'center',
                                         fontSize: 20,
                                         color:"#D87777",
-                                    }}>{state.playedSongs[state.selectedSong].title}</Text>
+                                    }}>{song.title}</Text>
                                     <TouchableOpacity>
                                         <Image source={require('assets/timer.png')} />
                                     </TouchableOpacity>
@@ -333,7 +351,7 @@ const Player = () => {
                                     color:"#ffffff",
                                     textAlign:'center',
                                     opacity:0.7
-                                }}>{state.playedSongs[state.selectedSong].channel}</Text>
+                                }}>{song.channel}</Text>
                                 <View style={{
                                     width: "100%",
                                     height: 200,
@@ -341,7 +359,7 @@ const Player = () => {
                                     marginTop: 15
                                 }}>
                                     <Video
-                                        source={{uri: state.playedSongs[state.selectedSong].url}}
+                                        source={{uri: song.url}}
                                         ref={(ref) => {audioElement = ref}}
                                         playInBackground={true}
                                         resizeMode={'contain'}
@@ -386,10 +404,8 @@ const Player = () => {
                         </LinearGradient>
                     </Animated.View>
                 </View>
-
             ) : null
     )
-
 }
 
 export default Player;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {Image, Animated, Easing} from 'react-native';
 
 const Disk = ({
@@ -7,7 +7,7 @@ const Disk = ({
     radius = 60
 }) => {
 
-    const spinValue = new Animated.Value(0)
+    const spinValue = useRef(new Animated.Value(0)).current;
 
     Animated.loop(
         Animated.timing(

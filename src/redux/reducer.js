@@ -3,14 +3,13 @@ import {SongData} from 'components/Song';
 const CHOSEN_SONG = 'CHOSEN_SONG'
 const EMPTY = 'EMPTY'
 
-export const chosenSong = item => ({
+export const chosenSong = (item) => ({
     type: CHOSEN_SONG,
     payload: item
 })
 
-export const empty = item => ({
+export const empty = () => ({
     type: EMPTY,
-    payload: item
 })
 
 const initialState = {
@@ -32,7 +31,7 @@ const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 chosen: {
-                    song: {},
+                    song: null,
                     playlist: []
                 }
             }

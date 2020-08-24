@@ -1,22 +1,10 @@
 export interface Song {
-  [x: string]: any;
   id: string;
   title: string;
   channel: string;
   genre: string;
   url: any;
 }
-
-const SongSchema = {
-  name: 'Song',
-  properties: {
-    id: 'string',
-    title: 'string',
-    channel: 'string',
-    genre: 'string',
-    url: 'any',
-  },
-};
 
 const SongData: Array<Song> = [
   {
@@ -197,4 +185,4 @@ const SongData: Array<Song> = [
   },
 ];
 
-export {SongData, SongSchema};
+export {SongData};

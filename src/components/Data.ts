@@ -7,10 +7,10 @@ const FavoriteSchema = {
     name: 'Favorite',
     properties: {
         id: 'string',
-        // title: 'string',
-        // channel: 'string',
-        // genre: 'string',
-        // url: 'any'
+        title: 'string',
+        channel: 'string',
+        genre: 'string',
+        url: 'string'
     }
 }
 
@@ -18,10 +18,10 @@ const RecentSchema = {
     name: 'Recent',
     properties: {
         id: 'string',
-        // title: 'string',
-        // channel: 'string',
-        // genre: 'string',
-        // url: 'any'
+        title: 'string',
+        channel: 'string',
+        genre: 'string',
+        url: 'string'
     }
 }
 
@@ -29,7 +29,13 @@ const createFavorite = (song: Song) => {
     Realm.open({schema: [FavoriteSchema]})
         .then((realm) => {
             realm.write(() => {
-                const favorite = realm.create('Favorite', {id: song.id})
+                const favorite = realm.create('Favorite', {
+                    id: song.id,
+                    title: song.title,
+                    channel: song.channel,
+                    genre: song.genre,
+                    url: song.url
+                })
             });
             realm.close();
         })
@@ -72,7 +78,13 @@ const createRecent = (song: Song) => {
                 if (recents.length === MAX_RECENT) {
                     realm.delete(recents[0]);
                 }
-                const recent = realm.create('Recent', {id: song.id});
+                const recent = realm.create('Recent', {
+                    id: song.id,
+                    title: song.title,
+                    channel: song.channel,
+                    genre: song.genre,
+                    url: song.url
+                });
             });
             realm.close();
         })
@@ -109,6 +121,6 @@ export {
     deleteFavorite,
     createRecent,
     getRecents,
-    deleteRecent,
+    deleteRecent
 };
 

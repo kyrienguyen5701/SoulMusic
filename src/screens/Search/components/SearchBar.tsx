@@ -7,15 +7,12 @@ import {
   TouchableOpacity,
   Text,
   Dimensions,
-  Button,
 } from 'react-native';
 import SearchResult from 'screens/Search/components/SearchResult';
 import {Song} from 'components/Song';
 import {findSubstring} from './strFunctions';
 import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
-import DefaultSearch from '../DefaultSearch';
-import {NavigationContainer} from '@react-navigation/native';
 
 export const width_screen = Dimensions.get('window').width;
 
@@ -23,6 +20,7 @@ const SearchBar = () => {
   const [value, setValue] = useState('');
   const [source, setSource] = useState([]);
   const [results, setResults] = useState([]);
+  const [display, setDisplay] = useState(false);
   const [loading, setLoading] = useState(false);
   const fetchData = () => {
     if (value != '') {
@@ -33,13 +31,14 @@ const SearchBar = () => {
         })
         .then((res) => {
           setResults(
-            res.filter((song: Song) => findSubstring(song.title, value)),
+            res.filter((song: Song) => findSubstring(song.title, value) || findSubstring(song.channel, value))
           );
           setSource(res);
         })
         .catch((error) => console.log('Error: ', error))
         .finally(() => {
           setLoading(false);
+          setDisplay(true);
         });
     }
   };
@@ -76,6 +75,7 @@ const SearchBar = () => {
                 value={value.toLowerCase()}
                 onChangeText={(text) => setValue(text)}
                 onSubmitEditing={fetchData}
+                onFocus={() => setDisplay(false)}
                 autoFocus={true}
               />
             </TouchableOpacity>
@@ -94,7 +94,7 @@ const SearchBar = () => {
                   color: 'white',
                   textAlignVertical: 'center',
                 }}>
-                Hủy
+                Cancel
               </Text>
             </TouchableOpacity>
           </View>
@@ -105,13 +105,19 @@ const SearchBar = () => {
               color="red"
             />
           ) : null}
-          <FlatList
-            keyExtractor={(item, index) => index.toString()}
-            data={results}
-            renderItem={({item}) => {
-              return <SearchResult song={item} playlist={source} />;
-            }}
-          />
+          {display ? (
+              results.length === 0 ? (
+                  <Text>No result</Text>
+              ) : (
+                  <FlatList
+                      keyExtractor={(item, index) => index.toString()}
+                      data={results}
+                      renderItem={({item}) => {
+                          return <SearchResult song={item} playlist={source} />;
+                      }}
+                  />
+              )
+          ) : null}
         </View>
       </View>
     </LinearGradient>
