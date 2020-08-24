@@ -9,10 +9,8 @@ import {
 } from 'react-native';
 import ShuffleButton from 'components/ShuffleButton';
 import {Song} from 'components/Song';
-import Recent from 'screens/Playlists/Recent';
 import LinearGradient from 'react-native-linear-gradient';
 import ListGenre from './ListGenre';
-import {width_screen} from 'screens/Playlists/DefaultPlaylists';
 
 // @ts-ignore
 const Playlist = ({navigation, route}) => {

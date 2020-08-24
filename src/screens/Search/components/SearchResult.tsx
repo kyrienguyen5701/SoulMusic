@@ -55,12 +55,12 @@ const SearchResult = (props: {song: Song; playlist: Array<Song>}) => {
                 color: '#D87777',
                 marginVertical: 10,
               }}>
-              {props.song.chanel}
+              {props.song.channel}
             </Text>
           </View>
         </View>
-      </TouchableOpacity>
-    </View>
+  </TouchableOpacity>
+  </View>
   );
 };
 

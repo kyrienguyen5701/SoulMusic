@@ -1,22 +1,10 @@
 export interface Song {
-  [x: string]: any;
   id: string;
   title: string;
   channel: string;
   genre: string;
   url: any;
 }
-
-const SongSchema = {
-  name: 'Song',
-  properties: {
-    id: 'string',
-    title: 'string',
-    channel: 'string',
-    genre: 'string',
-    url: 'any',
-  },
-};
 
 const SongData: Array<Song> = [
   {
@@ -71,7 +59,7 @@ const SongData: Array<Song> = [
   {
     id: 'ioNng23DkIM',
     title: "BLACKPINK - 'How You Like That' M-V",
-    channel: 'chanel 7',
+    channel: 'BLACKPINK',
     url:
       "http://42.112.17.21:8077/BLACKPINK%20-%20'How%20You%20Like%20That'%20M-V.mp4",
     genre: 'K-Pop',
@@ -197,4 +185,4 @@ const SongData: Array<Song> = [
   },
 ];
 
-export {SongData, SongSchema};
+export {SongData};

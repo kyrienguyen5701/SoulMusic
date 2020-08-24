@@ -8,16 +8,14 @@ const Disk = ({
 }) => {
   const spinValue = useRef(new Animated.Value(0)).current;
 
-  useCallback(() => {
-    Animated.loop(
-      Animated.timing(spinValue, {
-        toValue: 1,
-        duration: 10000,
-        easing: Easing.linear,
-        useNativeDriver: true,
-      }),
-    ).start();
-  }, []);
+  Animated.loop(
+    Animated.timing(spinValue, {
+      toValue: 1,
+      duration: 10000,
+      easing: Easing.linear,
+      useNativeDriver: true,
+    }),
+  ).start();
 
   const spin = spinValue.interpolate({
     inputRange: [0, 1],

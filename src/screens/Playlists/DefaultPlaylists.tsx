@@ -11,7 +11,6 @@ import {SongData, Song} from 'components/Song';
 import Recent from 'screens/Playlists/Recent';
 import LinearGradient from 'react-native-linear-gradient';
 import {getRecents} from 'components/Data';
-import ListGenre from './ListGenre';
 import {TouchableOpacity, ScrollView} from 'react-native-gesture-handler';
 import {width_screen} from 'components/Device';
 
@@ -80,9 +79,11 @@ const DefaultPlaylists = () => {
       style={{
         height: '100%',
         flex: 1,
-        paddingHorizontal: 16,
+        paddingLeft: 16,
       }}>
-      <ScrollView>
+      <ScrollView
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}>
         <View
           style={{
             marginTop: 41,
@@ -124,7 +125,6 @@ const DefaultPlaylists = () => {
           }}>
           Favorite Songs
         </Text>
-        <Image />
         <View style={styles.container}>
           <FlatList
             keyExtractor={(item, index) => index.toString()}
@@ -209,6 +209,7 @@ const styles = StyleSheet.create({
     color: '#D87777',
     fontSize: 11.5,
     marginLeft: ((width_screen - 30) % 2) - 8,
+    opacity: 0.8,
   },
 });
 export default DefaultPlaylists;

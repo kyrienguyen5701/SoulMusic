@@ -74,7 +74,9 @@ const DefaultSearch = (props: Song) => {
 
   return (
     <LinearGradient colors={['#0C08C4', '#030239', '#000000']}>
-      <ScrollView>
+      <ScrollView
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}>
         <View
           style={{
             height: '100%',
@@ -97,16 +99,15 @@ const DefaultSearch = (props: Song) => {
             <View
               style={{
                 marginTop: 28,
+                marginLeft: 15,
+                marginRight: 15,
               }}>
               <Text
                 style={{
-                  borderWidth: 1,
-                  marginLeft: 15,
-                  marginRight: 15,
                   borderRadius: 10,
                   backgroundColor: '#0C08C3',
                   opacity: 0.6,
-                  borderColor: '#F57A8E',
+                  padding: 10,
                   height: 50,
                   fontSize: 18,
                   color: '#8D5555',
