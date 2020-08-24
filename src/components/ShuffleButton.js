@@ -1,21 +1,33 @@
 import React from 'react';
-import {Text, TouchableOpacity} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 
 const ShuffleButton = ({title}) => {
-    return (
-        <TouchableOpacity style={{
-            width: 150,
-            height: 40,
-            borderRadius: 20,
-            backgroundColor: '#005995',
-            justifyContent: 'center'
+  return (
+    <View
+      style={{
+        marginTop: 20,
+        marginHorizontal: '32%',
+        width: 170,
+      }}>
+      <TouchableOpacity
+        style={{
+          width: 170,
+          height: 40,
+          borderRadius: 20,
+          backgroundColor: '#D87777',
+          justifyContent: 'center',
         }}>
-            <Text style={{
-                textAlign: 'center',
-                color: '#FBF579'
-            }}>{title}</Text>
-        </TouchableOpacity>
-    );
+        <Text
+          style={{
+            textAlign: 'center',
+            color: '#ffffff',
+            fontSize: 17,
+          }}>
+          {title}
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
 };
 
 export default ShuffleButton;

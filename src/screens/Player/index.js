@@ -10,11 +10,8 @@ import Pause from 'screens/Player/components/Pause';
 import Discard from 'screens/Player/components/Discard';
 import Next from 'screens/Player/components/Next';
 import Disk from 'screens/Player/components/Disk';
-import {chosenSong} from 'redux/reducer';
+import {chosenSong, empty} from 'redux/reducer';
 import {height_screen, width_screen} from 'components/Device';
-
-// try to use dispatch to update the state of the chosen song in redux
-// fix on y position
 
 const Player = () => {
     const {song, playlist} = useSelector(state => state.chosen);
@@ -22,7 +19,7 @@ const Player = () => {
     const dispatch = useDispatch();
     const [state, setState] = useState({
         isLoading: false,
-        paused: false,
+        paused: false, // default false, true for debugging
         isLoop: false,
         isShuffle: false,
         isFavorite: false,
@@ -41,7 +38,6 @@ const Player = () => {
     // initialize the playedSongs and pendingSongs when a song is clicked
     useEffect(() => {
         setState(prevState => {
-            // console.log(playlist);
             return {
                 ...prevState,
                 indexAtSource: playlist.findIndex((element) => element.id === song.id),
@@ -78,7 +74,6 @@ const Player = () => {
         (data) => {
             let getFavorite;
             getFavorites((source) => {
-                console.log(source);
                 if (source.findIndex((element) => element.id === state.playedSongs[state.selectedSong].id) === -1) {
                     getFavorite = false;
                 }
@@ -132,10 +127,10 @@ const Player = () => {
     const setFavorite = useCallback(
         () => {
             if (state.isFavorite) {
-                deleteFavorite(state.playedSongs[state.selectedSong])
+                deleteFavorite(song)
             }
             else {
-                createFavorite(state.playedSongs[state.selectedSong])
+                createFavorite(song)
             }
             setState(prevState => {
                 return {
@@ -143,7 +138,7 @@ const Player = () => {
                     isFavorite: !prevState.isFavorite
                 }
             })
-        }, [state.playedSongs[state.selectedSong], state.isFavorite]
+        }, [song, state.isFavorite]
     )
 
     const setShuffle = useCallback(
@@ -169,7 +164,10 @@ const Player = () => {
                         selectedSong: prevState.selectedSong - 1
                     }
                 }), 0);
-                // dispatch(chosenSong(state.playedSongs[state.selectedSong], playlist));
+                dispatch(chosenSong({
+                    song: state.playedSongs[state.selectedSong],
+                    playlist: playlist
+                }));
             } else {
                 audioElement.seek(0);
                 setState(prevState => {
@@ -179,7 +177,7 @@ const Player = () => {
                     }
                 });
             }
-        }, [state.playedSongs[state.selectedSong], state.selectedSong]
+        }, [song, state.selectedSong]
     );
 
     const forward = useCallback(
@@ -193,23 +191,27 @@ const Player = () => {
                         if (prevState.isShuffle) {
                             let next = parseInt(Math.random() * prevState.pendingSongs.length);
                             indexAtSource = playlist.findIndex((element) => element.id === prevState.pendingSongs[next].id)
-                            console.log(indexAtSource);
                         }
                     }
                     const toBeNext = playlist[indexAtSource];
+
                     return {
                         ...prevState,
                         currentTime: 0,
-                        paused: false,
+                        paused: false, // supposed to be false
                         indexAtSource: indexAtSource,
                         playedSongs: prevState.playedSongs.concat([toBeNext]),
                         pendingSongs: prevState.pendingSongs.filter((element) => element.id !== toBeNext.id),
                         selectedSong: prevState.selectedSong + 1
                     }
+                    // console.log("Betch", useSelector(state => state.chosen).song);
                 }), 0);
-                // dispatch(chosenSong(state.playedSongs[state.selectedSong], playlist));
+                dispatch(chosenSong({
+                    song: state.playedSongs[state.selectedSong],
+                    playlist: playlist
+                }));
             }
-        }, [state.playedSongs[state.selectedSong], state.selectedSong,state.indexAtSource]
+        }, [song, state.selectedSong, state.indexAtSource]
     );
 
     const forwardDisabled = useMemo(
@@ -237,7 +239,8 @@ const Player = () => {
                 return {
                     ...state
                 }
-            })
+            });
+            dispatch(empty());
         }, []
     )
 
@@ -291,7 +294,7 @@ const Player = () => {
                         width: '100%',
                     }}>
                         <Disk
-                            uri={`https://i.ytimg.com/vi/${state.playedSongs[state.selectedSong].id}/hqdefault.jpg`}
+                            uri={`https://i.ytimg.com/vi/${song.id}/hqdefault.jpg`}
                         />
                         <Text
                             numberOfLines={2}
@@ -305,7 +308,7 @@ const Player = () => {
                                 fontSize:12
                             }}
                         >
-                            {state.playedSongs[state.selectedSong].title}
+                            {song.title}
                         </Text>
                         <Pause pause={pause} paused={state.paused} height={30} width={30}/>
                         {state.paused
@@ -326,7 +329,6 @@ const Player = () => {
                             <View style={{
                                 height: '100%',
                             }}>
-
                                 <View style={{
                                     display: 'flex',
                                     flexDirection: 'row'
@@ -340,7 +342,7 @@ const Player = () => {
                                         textAlign: 'center',
                                         fontSize: 20,
                                         color:"#D87777",
-                                    }}>{state.playedSongs[state.selectedSong].title}</Text>
+                                    }}>{song.title}</Text>
                                     <TouchableOpacity>
                                         <Image source={require('assets/timer.png')} />
                                     </TouchableOpacity>
@@ -349,7 +351,7 @@ const Player = () => {
                                     color:"#ffffff",
                                     textAlign:'center',
                                     opacity:0.7
-                                }}>{state.playedSongs[state.selectedSong].channel}</Text>
+                                }}>{song.channel}</Text>
                                 <View style={{
                                     width: "100%",
                                     height: 200,
@@ -357,7 +359,7 @@ const Player = () => {
                                     marginTop: 15
                                 }}>
                                     <Video
-                                        source={{uri: state.playedSongs[state.selectedSong].url}}
+                                        source={{uri: song.url}}
                                         ref={(ref) => {audioElement = ref}}
                                         playInBackground={true}
                                         resizeMode={'contain'}
@@ -402,10 +404,8 @@ const Player = () => {
                         </LinearGradient>
                     </Animated.View>
                 </View>
-
             ) : null
     )
-
 }
 
 export default Player;

@@ -9,6 +9,8 @@ import {View} from 'react-native';
 import {Provider} from 'react-redux';
 import store from 'redux/store';
 import DefaultPlaylists from 'screens/Playlists/DefaultPlaylists';
+import Informations from 'screens/More';
+import Search from 'screens/Search';
 enableScreens();
 
 const Tab = createBottomTabNavigator();
@@ -25,30 +27,28 @@ export default function App() {
             screenOptions={({route}) => ({
               tabBarIcon: ({focused, color, size}) => {
                 let iconName;
-                if (route.name === 'DefaultPlaylists') {
+                if (route.name === 'Playlists') {
                   iconName = 'music';
-                }
-                else if (route.name === 'DefaultSearch') {
+                } else if (route.name === 'Search') {
                   iconName = 'search';
+                } else if (route.name === 'More') {
+                  iconName = 'ellipsis-h';
                 }
-                // else if (route.name === 'More') {
-                //   iconName = 'ellipsis-h';
-                // }
-                return <Icon name={iconName} size={size} color={color} />;
+                return <Icon name={iconName} size={30} color={color} />;
               },
             })}
             tabBarOptions={{
-              activeTintColor: 'red',
-              inactiveTintColor: 'gray',
+              activeTintColor: '#C82424',
+              inactiveTintColor: '#0063F8',
               tabStyle: {
                 backgroundColor: '#0C08C3',
-                height: 90,
               },
+              showLabel: false,
             }}
-            initialRouteName={'DefaultPlaylists'}>
-            <Tab.Screen name="DefaultSearch" component={DefaultSearch} />
-            <Tab.Screen name="DefaultPlaylists" component={DefaultPlaylists} />
-            {/*<Tab.Screen name="More" component={SearchBar} />*/}
+            initialRouteName={'Playlists'}>
+            <Tab.Screen name="Search" component={Search} />
+            <Tab.Screen name="Playlists" component={DefaultPlaylists} />
+            <Tab.Screen name="More" component={Informations} />
           </Tab.Navigator>
         </NavigationContainer>
         <Player />

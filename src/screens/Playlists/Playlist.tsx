@@ -9,8 +9,8 @@ import {
 } from 'react-native';
 import ShuffleButton from 'components/ShuffleButton';
 import {Song} from 'components/Song';
-import Recent from 'screens/Playlists/Recent';
 import LinearGradient from 'react-native-linear-gradient';
+import ListGenre from './ListGenre';
 
 // @ts-ignore
 const Playlist = ({navigation, route}) => {
@@ -56,54 +56,57 @@ const Playlist = ({navigation, route}) => {
           style={{
             marginHorizontal: 16,
             marginVertical: 20,
-            display: 'flex',
-            alignItems: 'center',
           }}>
           <View
             style={{
-              display: 'flex',
               flexDirection: 'row',
             }}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Image source={require('assets/back.png')} />
+            <TouchableOpacity
+              style={{
+                marginVertical: 25,
+                height: 30,
+                width: '10%',
+              }}
+              onPress={() => navigation.goBack()}>
+              <Image
+                style={{marginLeft: 20}}
+                source={require('assets/back.png')}
+              />
             </TouchableOpacity>
             <Text
               style={{
-                marginHorizontal: 12,
-                width: '80%',
+                fontSize: 30,
+                marginVertical: 20,
                 textAlign: 'center',
-                fontSize: 20,
+                width: '80%',
+                color: '#FFFFFF',
               }}>
               {genre}
             </Text>
-            {/*<TouchableOpacity>*/}
-            {/*    <Image source={require('assets/moreVertical.png')} />*/}
-            {/*</TouchableOpacity>*/}
           </View>
-          <View>
-            <FlatList
-              data={data}
-              showsVerticalScrollIndicator={false}
-              renderItem={({item}) => {
-                return <Recent song={item} playlist={data} />;
-              }}
-            />
-          </View>
-          {/*TODO: write an onPress function for button*/}
-          <ShuffleButton title="Shuffle Play" />
+          <Text
+            style={{
+              fontSize: 16,
+              textAlign: 'center',
+              marginTop: -5,
+              color: '#D87777',
+            }}>
+            Âm nhạc
+          </Text>
         </View>
-        <View>
+        <ShuffleButton title="Shuffle Play" />
+        <View style={{marginTop: 20, marginHorizontal: 16, marginVertical: 20}}>
           <FlatList
-            keyExtractor={(item, index) => index.toString()}
             data={data}
             showsVerticalScrollIndicator={false}
             renderItem={({item}) => {
-              return <Recent song={item} playlist={data} />;
+              return <ListGenre song={item} playlist={data} />;
             }}
           />
+
+          {/*TODO: write an onPress function for button*/}
         </View>
         {/*TODO: write an onPress function for button*/}
-        <ShuffleButton title="Shuffle Play" />
       </View>
     </LinearGradient>
   );

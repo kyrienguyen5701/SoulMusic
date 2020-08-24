@@ -3,28 +3,37 @@ import DefaultSearch from 'screens/Search/DefaultSearch';
 import {View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-// import QuerySearch from 'screens/Search/QuerySearch';
-// import Trending from 'screens/Search/Trending';
+import SearchBar from './components/SearchBar';
+import Playlist from 'screens/Playlists/Playlist';
 
 const Stack = createStackNavigator();
 
 const Search = () => {
-    return (
-        <View>
-            {/*<NavigationContainer>*/}
-            {/*    <Stack.Navigator initialRouteName='Search'>*/}
-            {/*        <Stack.Screen name='Search' component={DefaultSearch}/>*/}
-            {/*        /!*<Stack.Screen name='Query' component={QuerySearch}/>*!/*/}
-            {/*    </Stack.Navigator>*/}
-            {/*</NavigationContainer>*/}
-            {/*<NavigationContainer>*/}
-            {/*    <Stack.Navigator initialRouteName='Search'>*/}
-            {/*        <Stack.Screen name='Search' component={DefaultSearch} />*/}
-            {/*        /!*<Stack.Screen name='Trending' component={Trending} />*!/*/}
-            {/*    </Stack.Navigator>*/}
-            {/*</NavigationContainer>*/}
-        </View>
-    );
+  return (
+    <Stack.Navigator initialRouteName="DefaultSearch">
+      <Stack.Screen
+        name="DefaultSearch"
+        component={DefaultSearch}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="SearchBar"
+        component={SearchBar}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Playlist"
+        component={Playlist}
+        options={{
+          headerShown: false,
+        }}
+      />
+    </Stack.Navigator>
+  );
 };
 
 export default Search;
