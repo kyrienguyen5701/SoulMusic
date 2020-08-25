@@ -5,7 +5,7 @@ import SeekBar from 'screens/Player/components/SeekBar';
 import LinearGradient from 'react-native-linear-gradient';
 import Controls from 'screens/Player/components/Controls';
 import {useDispatch, useSelector} from 'react-redux';
-import {createFavorite, deleteFavorite, getFavorites} from 'components/Data';
+import {createFavorite, createRecent, deleteFavorite, getFavorites} from 'components/Data';
 import Pause from 'screens/Player/components/Pause';
 import Discard from 'screens/Player/components/Discard';
 import Next from 'screens/Player/components/Next';
@@ -35,6 +35,7 @@ const Player = () => {
   });
   const x = useRef(new Animated.Value(0)).current;
   const y = useRef(new Animated.Value(0)).current;
+
   // initialize the playedSongs and pendingSongs when a song is clicked
   useEffect(() => {
     setState((prevState) => {
@@ -46,6 +47,7 @@ const Player = () => {
       };
     });
   }, [playlist]);
+
   const onLoadStart = useCallback(
     (data) => {
       setState((prevState) => {
@@ -57,6 +59,7 @@ const Player = () => {
     },
     [state.isLoading],
   );
+
   const setTime = (data) => {
     setState((prevState) => {
       return {
@@ -65,6 +68,7 @@ const Player = () => {
       };
     });
   };
+
   const onSlidingStart = useCallback(() => {
     setState((prevState) => {
       return {
@@ -124,8 +128,10 @@ const Player = () => {
   const setFavorite = useCallback(() => {
     if (state.isFavorite) {
       deleteFavorite(song);
+      getFavorites((source) => {console.log(source)});
     } else {
       createFavorite(song);
+      getFavorites((source) => {console.log(source)});
     }
     setState((prevState) => {
       return {
@@ -165,6 +171,7 @@ const Player = () => {
           playlist: playlist,
         }),
       );
+      createRecent(state.playedSongs[state.selectedSong]);
     } else {
       audioElement.seek(0);
       setState((prevState) => {
@@ -207,7 +214,6 @@ const Player = () => {
               ),
               selectedSong: prevState.selectedSong + 1,
             };
-            // console.log("Betch", useSelector(state => state.chosen).song);
           }),
         0,
       );
@@ -217,6 +223,7 @@ const Player = () => {
           playlist: playlist,
         }),
       );
+      createRecent(state.playedSongs[state.selectedSong]);
     }
   }, [song, state.selectedSong, state.indexAtSource]);
 

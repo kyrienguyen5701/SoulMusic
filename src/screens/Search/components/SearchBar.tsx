@@ -30,6 +30,7 @@ const SearchBar = () => {
           return res.json();
         })
         .then((res) => {
+          setSource(res);
           setResults(
             res.filter(
               (song: Song) =>
@@ -37,7 +38,6 @@ const SearchBar = () => {
                 findSubstring(song.channel, value),
             ),
           );
-          setSource(res);
         })
         .catch((error) => console.log('Error: ', error))
         .finally(() => {
