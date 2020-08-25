@@ -3,7 +3,7 @@ import {Song} from 'components/Song';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {chosenSong} from 'redux/reducer';
-import {createRecent, deleteRecent, getRecents} from 'components/Data';
+import {createRecent, deleteRecent} from 'components/Data';
 import {width_screen} from 'components/Device';
 
 const Recent = (props: {
@@ -22,14 +22,17 @@ const Recent = (props: {
           createRecent(props.data.song);
           props.updateRecents;
         }}
-        // onLongPress={() => deleteRecent(props.song)}
+        // onLongPress={() =>
+          // deleteRecent(props.data.song);
+          // props.updateRecents;
+          // }}
         style={{
           marginRight: 12,
           paddingVertical: 12,
         }}>
         <Image
           source={{
-            uri: `https://i.ytimg.com/vi/${props.song.id}/hqdefault.jpg`,
+            uri: `https://i.ytimg.com/vi/${props.data.song.id}/hqdefault.jpg`,
           }}
           style={{
             width: width_screen * 0.4,
@@ -46,7 +49,7 @@ const Recent = (props: {
             marginTop: 6,
             opacity: 0.8,
           }}>
-          {props.song.title}
+          {props.data.song.title}
         </Text>
       </TouchableOpacity>
     </View>

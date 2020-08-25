@@ -16,10 +16,9 @@ const SearchResult = (props: {song: Song; playlist: Array<Song>}) => {
         marginBottom: 20,
       }}>
       <TouchableOpacity
-        style={{}}
         onPress={() => {
           dispatch(chosenSong(props));
-          // createRecent(props.song);
+          createRecent(props.song);
         }}>
         <View
           style={{
