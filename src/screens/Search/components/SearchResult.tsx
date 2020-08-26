@@ -6,7 +6,13 @@ import {useDispatch} from 'react-redux';
 import {chosenSong} from 'redux/reducer';
 import {createRecent} from 'components/Data';
 
-const SearchResult = (props: {song: Song; playlist: Array<Song>}) => {
+const SearchResult = (props: {
+    data: {
+        song: Song;
+        playlist: Array<Song>;
+    };
+    updateRecents: () => void;
+}) => {
   const dispatch = useDispatch();
   return (
     <View
@@ -17,8 +23,9 @@ const SearchResult = (props: {song: Song; playlist: Array<Song>}) => {
       }}>
       <TouchableOpacity
         onPress={() => {
-          dispatch(chosenSong(props));
-          createRecent(props.song);
+            dispatch(chosenSong(props.data));
+            createRecent(props.data.song);
+            props.updateRecents();
         }}>
         <View
           style={{
@@ -26,7 +33,7 @@ const SearchResult = (props: {song: Song; playlist: Array<Song>}) => {
           }}>
           <Image
             source={{
-              uri: `https://i.ytimg.com/vi/${props.song.id}/hqdefault.jpg`,
+              uri: `https://i.ytimg.com/vi/${props.data.song.id}/hqdefault.jpg`,
             }}
             style={{
               width: 120,
@@ -46,7 +53,7 @@ const SearchResult = (props: {song: Song; playlist: Array<Song>}) => {
               }}
               ellipsizeMode="tail"
               numberOfLines={2}>
-              {props.song.title}
+              {props.data.song.title}
             </Text>
             <Text
               style={{
@@ -54,7 +61,7 @@ const SearchResult = (props: {song: Song; playlist: Array<Song>}) => {
                 color: '#D87777',
                 marginVertical: 10,
               }}>
-              {props.song.channel}
+              {props.data.song.channel}
             </Text>
           </View>
         </View>

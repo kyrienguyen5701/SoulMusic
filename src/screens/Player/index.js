@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   createFavorite,
   createRecent,
+  getRecents,
   deleteFavorite,
   getFavorites,
 } from 'components/Data';
@@ -15,12 +16,15 @@ import Pause from 'screens/Player/components/Pause';
 import Discard from 'screens/Player/components/Discard';
 import Next from 'screens/Player/components/Next';
 import Disk from 'screens/Player/components/Disk';
-import {chosenSong, empty} from 'redux/reducer';
+import {chosenSong, empty, tempFavorites, tempRecents} from 'redux/reducer';
 import {height_screen, width_screen} from 'components/Device';
 import TextTicker from 'react-native-text-ticker';
 
 const Player = () => {
   const {song, playlist} = useSelector((state) => state.chosen);
+  const recents = useSelector((state) => state.tempRecents);
+  const favorites = useSelector((state) => state.tempFavorites);
+  const refresh = useSelector((state) => state.refresh);
   let audioElement = useRef(null);
   const dispatch = useDispatch();
   const [state, setState] = useState({
@@ -142,7 +146,12 @@ const Player = () => {
         isFavorite: !prevState.isFavorite,
       };
     });
-  }, [song, state.isFavorite]);
+    getFavorites((source) => {
+      const cloneSrc = JSON.parse(JSON.stringify(source));
+      console.log('Noob UwU');
+      dispatch(tempFavorites(Object.values(cloneSrc).reverse()));
+    });
+  }, [song, state.isFavorite, refresh]);
 
   const setShuffle = useCallback(() => {
     setState((prevState) => {
@@ -175,6 +184,12 @@ const Player = () => {
         }),
       );
       createRecent(state.playedSongs[state.selectedSong]);
+      getRecents((source) => {
+        const cloneSrc = JSON.parse(JSON.stringify(source));
+        console.log('Noob UwU');
+        dispatch(tempRecents(Object.values(cloneSrc).reverse()));
+        // setRecents(Object.values(cloneSrc).reverse())
+      });
     } else {
       audioElement.seek(0);
       setState((prevState) => {
@@ -184,7 +199,7 @@ const Player = () => {
         };
       });
     }
-  }, [song, state.selectedSong]);
+  }, [song, state.selectedSong, refresh]);
 
   const forward = useCallback(() => {
     if (state.pendingSongs.length > 0) {
@@ -227,8 +242,18 @@ const Player = () => {
         }),
       );
       createRecent(state.playedSongs[state.selectedSong]);
+      getRecents((source) => {
+        const cloneSrc = JSON.parse(JSON.stringify(source));
+        console.log('Noob UwU');
+        dispatch(tempRecents(Object.values(cloneSrc).reverse()));
+        // setRecents(Object.values(cloneSrc).reverse())
+      });
     }
-  }, [song, state.selectedSong, state.indexAtSource]);
+  }, [song, state.selectedSong, state.indexAtSource, refresh]);
+
+  const backDisabled = useMemo(() => state.selectedSong === 0, [
+    state.selectedSong,
+  ]);
 
   const forwardDisabled = useMemo(
     () => state.selectedSong === playlist.length - 1,
@@ -257,6 +282,7 @@ const Player = () => {
     });
     dispatch(empty());
   }, []);
+
   const slideUp = useCallback(() => {
     Animated.spring(y, {
       toValue: -height_screen,
@@ -270,6 +296,7 @@ const Player = () => {
       };
     });
   }, [y, state.visible]);
+
   const slideDown = useCallback(() => {
     Animated.spring(y, {
       toValue: 0,
@@ -283,6 +310,24 @@ const Player = () => {
       };
     });
   }, [y, state.visible]);
+
+  const updateFavorites = useCallback(() => {
+    getFavorites((source) => {
+      const cloneSrc = JSON.parse(JSON.stringify(source));
+      console.log('Noob UwU');
+      dispatch(tempFavorites(Object.values(cloneSrc).reverse()));
+    });
+  }, [refresh]);
+
+  const onBack = () => {
+    back;
+    updateRecents;
+  };
+
+  const onForward = () => {
+    forward;
+    updateRecents;
+  };
 
   return state.playedSongs.length > 0 ? (
     <View>
@@ -445,6 +490,7 @@ const Player = () => {
                 paused={state.paused}
                 pause={pause}
                 back={back}
+                backDisabled={backDisabled}
                 forward={forward}
                 forwardDisabled={forwardDisabled}
                 isLoop={state.isLoop}

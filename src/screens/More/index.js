@@ -23,7 +23,7 @@ const Informations = () => {
           VIETNAM
         </Text>
         <Text style={{fontSize: 20, color: '#ffffff', marginTop: 30}}>
-          Do you love SoundMusic
+          Do you love SoulMusic
         </Text>
         <Text
           style={{fontSize: 16, color: '#D87777', marginTop: 10, opacity: 0.7}}>

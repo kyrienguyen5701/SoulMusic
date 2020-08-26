@@ -7,15 +7,22 @@ import {chosenSong} from 'redux/reducer';
 import {width_screen} from 'components/Device';
 import {createRecent} from 'components/Data';
 
-const ListGenre = (props: {song: Song; playlist: Array<Song>}) => {
+const ListGenre = (props: {
+  data: {
+    song: Song;
+    playlist: Array<Song>;
+  };
+  updateRecents: () => void;
+}) => {
   const dispatch = useDispatch();
 
   return (
     <View>
       <TouchableOpacity
         onPress={() => {
-          dispatch(chosenSong(props));
-          createRecent(props.song);
+          dispatch(chosenSong(props.data));
+          createRecent(props.data.song);
+          props.updateRecents();
         }}
         style={{
           marginRight: 12,
@@ -24,7 +31,7 @@ const ListGenre = (props: {song: Song; playlist: Array<Song>}) => {
         }}>
         <Image
           source={{
-            uri: `https://i.ytimg.com/vi/${props.song.id}/hqdefault.jpg`,
+            uri: `https://i.ytimg.com/vi/${props.data.song.id}/hqdefault.jpg`,
           }}
           style={{
             width: width_screen * 0.3,
@@ -47,10 +54,10 @@ const ListGenre = (props: {song: Song; playlist: Array<Song>}) => {
               color: '#FFFFFF',
               opacity: 0.8,
             }}>
-            {props.song.title}
+            {props.data.song.title}
           </Text>
           <Text style={{color: '#D87777', marginVertical: 5, fontSize: 12}}>
-            {props.song.channel}
+            {props.data.song.channel}
           </Text>
         </View>
       </TouchableOpacity>

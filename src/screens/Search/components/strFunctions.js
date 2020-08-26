@@ -42,5 +42,5 @@ export function noAccent(str) {
 }
 
 export function findSubstring(str, substr) {
-    return noAccent(str).toLowerCase().indexOf(noAccent(substr)) != -1;
+    return noAccent(str).toLowerCase().indexOf(noAccent(substr).toLowerCase()) != -1;
 }
