@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -11,12 +11,18 @@ import ShuffleButton from 'components/ShuffleButton';
 import {Song} from 'components/Song';
 import LinearGradient from 'react-native-linear-gradient';
 import ListGenre from './ListGenre';
+import Recent from "screens/Playlists/Recent";
+import {useDispatch, useSelector} from "react-redux";
+import {getRecents} from "components/Data";
+import {tempRecents} from "redux/reducer";
 
 // @ts-ignore
 const Playlist = ({navigation, route}) => {
   const genre = route.params;
   const [data, setData] = useState(Array<Song>());
   const [loading, setLoading] = useState(true);
+    const refresh = useSelector(state => state.refresh);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     fetch('https://5f22da500e9f660016d8893d.mockapi.io/SoulMusic/Api/Songs')
@@ -31,6 +37,15 @@ const Playlist = ({navigation, route}) => {
         setLoading(false);
       });
   });
+
+    const updateRecents = useCallback(
+        () => {getRecents(source => {
+            const cloneSrc = JSON.parse(JSON.stringify(source));
+            console.log("Noob UwU");
+            dispatch(tempRecents(Object.values(cloneSrc).reverse()))
+            // setRecents(Object.values(cloneSrc).reverse())
+        })}, [refresh]
+    )
 
   if (loading) {
     return (
@@ -98,7 +113,7 @@ const Playlist = ({navigation, route}) => {
             data={data}
             showsVerticalScrollIndicator={false}
             renderItem={({item}) => {
-              return <ListGenre song={item} playlist={data} />;
+              return <ListGenre data={{song: item, playlist: data}} updateRecents={updateRecents} />;
             }}
           />
 
