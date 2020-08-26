@@ -9,23 +9,28 @@ import Recent from 'screens/Playlists/Recent';
 import LinearGradient from 'react-native-linear-gradient';
 import {getRecents, getFavorites} from 'components/Data';
 import Favorite from "screens/Playlists/Favorite";
+import {useDispatch, useSelector} from 'react-redux';
+import {tempFavorites, tempRecents} from 'redux/reducer';
 
 const DefaultPlaylists = () => {
 
-  const [recents, setRecents] = useState([]);
-  const [favorites, setFavorites] = useState([]);
+  // const [recents, setRecents] = useState([]);
+  // const [favorites, setFavorites] = useState([]);
   const [all, setAll] = useState([]);
-  const [refresh, setRefresh] = useState(false); // initial value does not matter here
+  // const [refresh, setRefresh] = useState(false); // initial value does not matter here
+  const dispatch = useDispatch();
 
   useEffect(
       () => {
         getRecents(source => {
           const cloneSrc = JSON.parse(JSON.stringify(source));
-          setRecents(Object.values(cloneSrc).reverse())
+          dispatch(tempRecents(Object.values(cloneSrc).reverse()))
+          // setRecents(Object.values(cloneSrc).reverse())
         })
           getFavorites(source => {
               const cloneSrc = JSON.parse(JSON.stringify(source));
-              setFavorites(Object.values(cloneSrc))
+              dispatch(tempFavorites(Object.values(cloneSrc)))
+              // setFavorites(Object.values(cloneSrc))
           })
           fetch('https://5f22da500e9f660016d8893d.mockapi.io/SoulMusic/Api/Songs')
               .then((res) => {
@@ -37,14 +42,17 @@ const DefaultPlaylists = () => {
               .catch((error) => console.log('Error: ', error))
       }, []
   )
-    console.log(recents);
+
+  const recents = useSelector(state => state.tempRecents);
+  const favorites = useSelector(state => state.tempFavorites);
+  const refresh = useSelector(state => state.refresh);
 
   const updateRecents = useCallback(
       () => {getRecents(source => {
         const cloneSrc = JSON.parse(JSON.stringify(source));
         console.log("Noob UwU");
-        setRecents(Object.values(cloneSrc).reverse())
-        setRefresh(!refresh);
+        dispatch(tempRecents(Object.values(cloneSrc).reverse()))
+        // setRecents(Object.values(cloneSrc).reverse())
       })}, [refresh]
   )
 

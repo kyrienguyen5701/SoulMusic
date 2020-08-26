@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -13,6 +13,10 @@ import {Song} from 'components/Song';
 import {findSubstring} from './strFunctions';
 import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
+import Recent from "screens/Playlists/Recent";
+import {useDispatch, useSelector} from "react-redux";
+import {getRecents} from "components/Data";
+import {tempRecents} from "redux/reducer";
 
 export const width_screen = Dimensions.get('window').width;
 
@@ -22,6 +26,8 @@ const SearchBar = () => {
   const [results, setResults] = useState([]);
   const [display, setDisplay] = useState(false);
   const [loading, setLoading] = useState(false);
+    const refresh = useSelector(state => state.refresh);
+    const dispatch = useDispatch();
   const fetchData = () => {
     if (value != '') {
       setLoading(true);
@@ -48,6 +54,14 @@ const SearchBar = () => {
       setResults([]);
     }
   };
+    const updateRecents = useCallback(
+        () => {getRecents(source => {
+            const cloneSrc = JSON.parse(JSON.stringify(source));
+            console.log("Noob UwU");
+            dispatch(tempRecents(Object.values(cloneSrc).reverse()))
+            // setRecents(Object.values(cloneSrc).reverse())
+        })}, [refresh]
+    )
   const navigation = useNavigation();
 
   return (
@@ -126,7 +140,7 @@ const SearchBar = () => {
                 keyExtractor={(item, index) => index.toString()}
                 data={results}
                 renderItem={({item}) => {
-                  return <SearchResult song={item} playlist={source} />;
+                  return <SearchResult data={{song: item, playlist: source}} updateRecents={updateRecents} />;
                 }}
               />
             )
