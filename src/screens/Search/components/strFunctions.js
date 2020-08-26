@@ -1,6 +1,6 @@
 export function noAccent(str) {
-    var newStr = ''
-    for (var i = 0; i < str.toLowerCase().length; i++) {
+    let newStr = ''
+    for (let i = 0; i < str.toLowerCase().length; i++) {
         switch(str[i]) {
             case 'a': case 'ă': case 'â':
             case 'à': case 'ằ': case 'ầ':

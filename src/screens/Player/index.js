@@ -128,10 +128,8 @@ const Player = () => {
   const setFavorite = useCallback(() => {
     if (state.isFavorite) {
       deleteFavorite(song);
-      getFavorites((source) => {console.log(source)});
     } else {
       createFavorite(song);
-      getFavorites((source) => {console.log(source)});
     }
     setState((prevState) => {
       return {

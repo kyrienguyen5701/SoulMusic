@@ -94,6 +94,7 @@ const Playlist = ({navigation, route}) => {
         <ShuffleButton title="Shuffle Play" />
         <View style={{marginTop: 20, marginVertical: 20}}>
           <FlatList
+            keyExtractor={item => item.id}
             data={data}
             showsVerticalScrollIndicator={false}
             renderItem={({item}) => {

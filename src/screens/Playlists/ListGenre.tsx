@@ -5,6 +5,7 @@ import {Image, Text, TouchableOpacity, View} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {chosenSong} from 'redux/reducer';
 import {width_screen} from 'components/Device';
+import {createRecent} from "components/Data";
 
 const ListGenre = (props: {song: Song; playlist: Array<Song>}) => {
   const dispatch = useDispatch();
@@ -12,7 +13,10 @@ const ListGenre = (props: {song: Song; playlist: Array<Song>}) => {
   return (
     <View>
       <TouchableOpacity
-        onPress={() => dispatch(chosenSong(props))}
+        onPress={() => {
+            dispatch(chosenSong(props));
+            createRecent(props.song);
+        }}
         style={{
           marginRight: 12,
           marginHorizontal: 12,
@@ -45,7 +49,7 @@ const ListGenre = (props: {song: Song; playlist: Array<Song>}) => {
             {props.song.title}
           </Text>
           <Text style={{color: '#D87777', marginVertical: 5, fontSize: 12}}>
-            {props.song.chanel}
+            {props.song.channel}
           </Text>
         </View>
       </TouchableOpacity>

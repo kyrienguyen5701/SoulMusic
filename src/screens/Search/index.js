@@ -1,10 +1,8 @@
 import React from 'react';
-import DefaultSearch from 'screens/Search/DefaultSearch';
-import {View} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import SearchBar from './components/SearchBar';
 import Playlist from 'screens/Playlists/Playlist';
+import DefaultSearch from './DefaultSearch';
 
 const Stack = createStackNavigator();
 

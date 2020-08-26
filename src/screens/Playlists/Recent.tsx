@@ -22,10 +22,10 @@ const Recent = (props: {
           createRecent(props.data.song);
           props.updateRecents;
         }}
-        // onLongPress={() =>
-          // deleteRecent(props.data.song);
-          // props.updateRecents;
-          // }}
+        onLongPress={() => {
+          deleteRecent(props.data.song);
+          props.updateRecents;
+        }}
         style={{
           marginRight: 12,
           paddingVertical: 12,
