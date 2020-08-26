@@ -1,4 +1,4 @@
-import Realm from 'realm'
+import Realm, {Results} from 'realm'
 import {Song} from "components/Song";
 
 const MAX_RECENT = 10;
@@ -42,7 +42,7 @@ const createFavorite = (song: Song) => {
         .catch(error => console.log("Create Error: ", error))
 }
 
-const getFavorites = (callback) => {
+const getFavorites = (callback: (param: Results<Object>) => void) => {
     Realm.open({schema: [FavoriteSchema]})
         .then((realm) => {
             const favorites = realm.objects('Favorite');
@@ -57,6 +57,7 @@ const deleteFavorite = (song: Song) => {
         .then((realm) => {
             realm.write(() => {
                 const favorites = realm.objects('Favorite')
+                // @ts-ignore
                 const favoriteIndex = favorites.findIndex((element) => element.id === song.id);
                 console.log("Del favorite:", favorites[favoriteIndex])
                 realm.delete(favorites[favoriteIndex]);
@@ -71,6 +72,7 @@ const createRecent = (song: Song) => {
         .then((realm) => {
             realm.write(() => {
                 const recents = realm.objects('Recent');
+                // @ts-ignore
                 const index = recents.findIndex((element) => element.id === song.id)
                 if (index !== -1) {
                     realm.delete(recents[index]);
@@ -91,7 +93,7 @@ const createRecent = (song: Song) => {
         .catch(error => console.log("Create Error: ", error))
 }
 
-const getRecents = (callback) => {
+const getRecents = (callback: (param: Results<Object>) => void) => {
     Realm.open({schema: [RecentSchema]})
         .then((realm) => {
             const recents = realm.objects('Recent');
@@ -106,6 +108,7 @@ const deleteRecent = (song: Song) => {
         .then((realm) => {
             realm.write(() => {
                 const recents = realm.objects('Recent')
+                // @ts-ignore
                 const recentIndex = recents.findIndex((element) => element.id === song.id);
                 console.log("Del recent:", recents[recentIndex])
                 realm.delete(recents[recentIndex]);

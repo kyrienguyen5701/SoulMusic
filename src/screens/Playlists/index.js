@@ -1,8 +1,8 @@
 import React from "react";
 import {createNativeStackNavigator} from "react-native-screens/native-stack";
 import Player from "screens/Player";
-import DefaultPlaylists from 'screens/Playlists/DefaultPlaylists';
 import Playlist from 'screens/Playlists/Playlist';
+import DefaultPlaylists from 'screens/Playlists/DefaultPlaylists';
 
 const Stack = createNativeStackNavigator();
 

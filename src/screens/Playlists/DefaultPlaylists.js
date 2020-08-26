@@ -15,12 +15,13 @@ const DefaultPlaylists = () => {
   const [recents, setRecents] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [all, setAll] = useState([]);
+  const [refresh, setRefresh] = useState(false); // initial value does not matter here
 
   useEffect(
       () => {
         getRecents(source => {
           const cloneSrc = JSON.parse(JSON.stringify(source));
-          setRecents(Object.values(cloneSrc))
+          setRecents(Object.values(cloneSrc).reverse())
         })
           getFavorites(source => {
               const cloneSrc = JSON.parse(JSON.stringify(source));
@@ -36,22 +37,24 @@ const DefaultPlaylists = () => {
               .catch((error) => console.log('Error: ', error))
       }, []
   )
+    console.log(recents);
 
   const updateRecents = useCallback(
       () => {getRecents(source => {
         const cloneSrc = JSON.parse(JSON.stringify(source));
         console.log("Noob UwU");
-        setRecents(Object.values(cloneSrc))
-      })}, [recents]
+        setRecents(Object.values(cloneSrc).reverse())
+        setRefresh(!refresh);
+      })}, [refresh]
   )
 
-  const updateFavorites = useCallback(
-      () => {getFavorites(source => {
-        const cloneSrc = JSON.parse(JSON.stringify(source));
-        console.log("Noob UwU");
-        setRecents(Object.values(cloneSrc))
-      })}, [recents]
-  )
+  // const updateFavorites = useCallback(
+  //     () => {getFavorites(source => {
+  //       const cloneSrc = JSON.parse(JSON.stringify(source));
+  //       console.log("Noob UwU");
+  //       setRecents(Object.values(cloneSrc))
+  //     })}, [recents]
+  // )
 
   return (
     <LinearGradient
@@ -91,7 +94,10 @@ const DefaultPlaylists = () => {
         <View>
             {recents.length !== 0
                 ? <FlatList
-                    data={recents.reverse()}
+                    showsHorizontalScrollIndicator={false}
+                    keyExtractor={item => item.id}
+                    data={recents}
+                    extraData={refresh}
                     horizontal={true}
                     renderItem={({item}) => {
                         return <Recent data={{song: item, playlist: all}} updateRecents={updateRecents} />;
@@ -111,7 +117,8 @@ const DefaultPlaylists = () => {
            <View style={styles.container}>
                {favorites.length !== 0
                    ? <FlatList
-                       keyExtractor={(item, index) => index.toString()}
+                       showsVerticalScrollIndicator={false}
+                       keyExtractor={item => item.id}
                        data={favorites}
                        renderItem={({item}) => {
                            return <Favorite data={{song:item, playlist: favorites}} />
@@ -119,7 +126,6 @@ const DefaultPlaylists = () => {
                    />
                    : <Text>Save your favorite songs here</Text>
                }
-
           </View>
       </ScrollView>
     </LinearGradient>

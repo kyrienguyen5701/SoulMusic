@@ -20,12 +20,12 @@ const Recent = (props: {
         onPress={() => {
           dispatch(chosenSong(props.data));
           createRecent(props.data.song);
+          props.updateRecents();
+        }}
+        onLongPress={() => {
+          deleteRecent(props.data.song);
           props.updateRecents;
         }}
-        // onLongPress={() =>
-          // deleteRecent(props.data.song);
-          // props.updateRecents;
-          // }}
         style={{
           marginRight: 12,
           paddingVertical: 12,

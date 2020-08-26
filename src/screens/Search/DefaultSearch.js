@@ -66,10 +66,10 @@ const data = [
   },
 ];
 
-const DefaultSearch = (props: Song) => {
+const DefaultSearch = () => {
   const navigation = useNavigation();
   const onGoSearchBar = useCallback(() => {
-    props.navigation.navigate('SearchBar');
+    navigation.navigate('SearchBar');
   }, []);
 
   return (
