@@ -352,7 +352,7 @@ const Player = () => {
               style={{
                 display: 'flex',
                 flexDirection: 'row',
-                marginVertical: 16,
+                marginVertical: 30,
               }}>
               <TouchableOpacity onPress={slideDown}>
                 <Image
