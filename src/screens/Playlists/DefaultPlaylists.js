@@ -15,13 +15,13 @@ const DefaultPlaylists = () => {
   const [recents, setRecents] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [all, setAll] = useState([]);
-  const [refresh, setRefresh] = useState(false);
+  const [refresh, setRefresh] = useState(false); // initial value does not matter here
 
   useEffect(
       () => {
         getRecents(source => {
           const cloneSrc = JSON.parse(JSON.stringify(source));
-          setRecents(Object.values(cloneSrc))
+          setRecents(Object.values(cloneSrc).reverse())
         })
           getFavorites(source => {
               const cloneSrc = JSON.parse(JSON.stringify(source));
@@ -37,14 +37,14 @@ const DefaultPlaylists = () => {
               .catch((error) => console.log('Error: ', error))
       }, []
   )
+    console.log(recents);
 
   const updateRecents = useCallback(
       () => {getRecents(source => {
         const cloneSrc = JSON.parse(JSON.stringify(source));
         console.log("Noob UwU");
-        setRecents(Object.values(cloneSrc))
+        setRecents(Object.values(cloneSrc).reverse())
         setRefresh(!refresh);
-        // setTimeout(setRefresh(true), 500)
       })}, [refresh]
   )
 
@@ -96,7 +96,7 @@ const DefaultPlaylists = () => {
                 ? <FlatList
                     showsHorizontalScrollIndicator={false}
                     keyExtractor={item => item.id}
-                    data={recents.reverse()}
+                    data={recents}
                     extraData={refresh}
                     horizontal={true}
                     renderItem={({item}) => {
