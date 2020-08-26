@@ -13,7 +13,11 @@ import LinearGradient from 'react-native-linear-gradient';
 import {Song} from 'components/Song';
 import {useNavigation} from '@react-navigation/native';
 import Genre from './Genre';
-import SearchBar from '../Search/components/SearchBar';
+import SearchBar from './components/SearchBar';
+import {useDispatch} from 'react-redux';
+import {chosenSong} from 'redux/reducer';
+import ListTrending from './components/ListTrending';
+import {createRecent} from 'components/Data';
 
 export const width_screen = Dimensions.get('window').width;
 
@@ -66,12 +70,13 @@ const data = [
   },
 ];
 
-const DefaultSearch = () => {
+const DefaultSearch = (props: {song: Song; playlist: Array<Song>}) => {
   const navigation = useNavigation();
   const onGoSearchBar = useCallback(() => {
     navigation.navigate('SearchBar');
   }, []);
 
+  const dispatch = useDispatch();
   return (
     <LinearGradient colors={['#0C08C4', '#030239', '#000000']}>
       <ScrollView
@@ -160,6 +165,7 @@ const DefaultSearch = () => {
                 )}
               />
             </View>
+            {/* <ListTrending /> */}
             <Text
               style={{
                 color: '#ffffff',

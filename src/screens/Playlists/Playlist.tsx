@@ -11,6 +11,8 @@ import ShuffleButton from 'components/ShuffleButton';
 import {Song} from 'components/Song';
 import LinearGradient from 'react-native-linear-gradient';
 import ListGenre from './ListGenre';
+import {width_screen} from 'components/Device';
+import {ScrollView} from 'react-native-gesture-handler';
 
 // @ts-ignore
 const Playlist = ({navigation, route}) => {
@@ -92,18 +94,19 @@ const Playlist = ({navigation, route}) => {
           </Text>
         </View>
         <ShuffleButton title="Shuffle Play" />
-        <View style={{marginTop: 20, marginVertical: 20}}>
-          <FlatList
-            keyExtractor={item => item.id}
-            data={data}
-            showsVerticalScrollIndicator={false}
-            renderItem={({item}) => {
-              return <ListGenre song={item} playlist={data} />;
-            }}
-          />
-
-          {/*TODO: write an onPress function for button*/}
-        </View>
+        <ScrollView>
+          <View style={{marginTop: 25, marginVertical: 20}}>
+            <FlatList
+              keyExtractor={(item) => item.id}
+              data={data}
+              showsVerticalScrollIndicator={false}
+              renderItem={({item}) => {
+                return <ListGenre song={item} playlist={data} />;
+              }}
+            />
+            {/*TODO: write an onPress function for button*/}
+          </View>
+        </ScrollView>
         {/*TODO: write an onPress function for button*/}
       </View>
     </LinearGradient>

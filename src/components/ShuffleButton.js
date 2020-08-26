@@ -1,12 +1,13 @@
 import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
+import {width_screen} from './Device';
 
 const ShuffleButton = ({title}) => {
   return (
     <View
       style={{
-        marginTop: 2,
-        paddingLeft: '26%',
+        marginTop: 5,
+        paddingLeft: (width_screen - 170) / 2,
       }}>
       <TouchableOpacity
         style={{

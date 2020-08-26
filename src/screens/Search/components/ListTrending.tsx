@@ -7,7 +7,7 @@ import {chosenSong} from 'redux/reducer';
 import {width_screen} from 'components/Device';
 import {createRecent} from 'components/Data';
 
-const ListGenre = (props: {song: Song; playlist: Array<Song>}) => {
+const ListTrending = (props: {song: Song; playlist: Array<Song>}) => {
   const dispatch = useDispatch();
 
   return (
@@ -58,4 +58,4 @@ const ListGenre = (props: {song: Song; playlist: Array<Song>}) => {
   );
 };
 
-export default ListGenre;
+export default ListTrending;

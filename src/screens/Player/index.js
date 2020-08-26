@@ -5,7 +5,12 @@ import SeekBar from 'screens/Player/components/SeekBar';
 import LinearGradient from 'react-native-linear-gradient';
 import Controls from 'screens/Player/components/Controls';
 import {useDispatch, useSelector} from 'react-redux';
-import {createFavorite, createRecent, deleteFavorite, getFavorites} from 'components/Data';
+import {
+  createFavorite,
+  createRecent,
+  deleteFavorite,
+  getFavorites,
+} from 'components/Data';
 import Pause from 'screens/Player/components/Pause';
 import Discard from 'screens/Player/components/Discard';
 import Next from 'screens/Player/components/Next';
@@ -286,6 +291,7 @@ const Player = () => {
         style={{
           position: 'absolute',
           top: -width_screen * 0.3578,
+
           transform: [
             {
               translateX: x,

@@ -16,7 +16,6 @@ enableScreens();
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-
 const TabApp = () => {
   return (
     <Tab.Navigator
@@ -34,7 +33,7 @@ const TabApp = () => {
         },
       })}
       tabBarOptions={{
-        activeTintColor: '#C82424',
+        activeTintColor: '#D87777',
         inactiveTintColor: '#0063F8',
         tabStyle: {
           backgroundColor: '#0C08C3',
