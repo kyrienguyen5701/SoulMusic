@@ -17,7 +17,7 @@
     "@react-navigation/stack": "^5.7.1",
     "@reduxjs/toolkit": "^1.4.0",
     "googleapis": "^55.0.0",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "react": "16.13.1",
     "react-native": "0.63.1",
     "react-native-base": "^1.1.0",
